@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ZH_MHXY_DUAL", "ZH_MHXY_DUAL\ZH_MHXY_DUAL.vcproj", "{27A492F2-95ED-4D66-ACE7-FD5CDB7362C6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		exe|Win32 = exe|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{27A492F2-95ED-4D66-ACE7-FD5CDB7362C6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{27A492F2-95ED-4D66-ACE7-FD5CDB7362C6}.Debug|Win32.Build.0 = Debug|Win32
+		{27A492F2-95ED-4D66-ACE7-FD5CDB7362C6}.exe|Win32.ActiveCfg = exe|Win32
+		{27A492F2-95ED-4D66-ACE7-FD5CDB7362C6}.exe|Win32.Build.0 = exe|Win32
+		{27A492F2-95ED-4D66-ACE7-FD5CDB7362C6}.Release|Win32.ActiveCfg = Release|Win32
+		{27A492F2-95ED-4D66-ACE7-FD5CDB7362C6}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
