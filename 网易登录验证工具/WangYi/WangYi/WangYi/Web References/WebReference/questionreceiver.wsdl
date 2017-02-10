@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:s1="http://tempuri.org/AbstractTypes" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="receiveQuestion">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="orderNO" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="gameId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="questionType" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="question" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="questionPic" type="s:base64Binary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="receiveQuestionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="receiveQuestionResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="receiveQuestion2">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="orderNO" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="gameId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="questionType" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="question" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="questionPic" type="s:base64Binary" />
+            <s:element minOccurs="1" maxOccurs="1" name="expiredSeconds" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="receiveQuestion2Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="receiveQuestion2Result" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="receiveMobQuestion">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="orderNO" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="gameId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="questionType" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="question" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="questionPic" type="s:base64Binary" />
+            <s:element minOccurs="1" maxOccurs="1" name="expiredSeconds" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="callback" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="receiveMobQuestionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="receiveMobQuestionResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="receiveScriptQuestion">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="orderNO" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="gameId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="questionType" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="question" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="questionPic" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="expiredSeconds" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="receiveScriptQuestionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="receiveScriptQuestionResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="correctAnswer">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="orderNO" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="gameId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="questionType" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="correctAnswerResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="correctAnswerResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="string" nillable="true" type="s:string" />
+    </s:schema>
+    <s:schema targetNamespace="http://tempuri.org/AbstractTypes">
+      <s:import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+      <s:complexType name="StringArray">
+        <s:complexContent mixed="false">
+          <s:restriction base="soapenc:Array">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="unbounded" name="String" type="s:string" />
+            </s:sequence>
+          </s:restriction>
+        </s:complexContent>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="receiveQuestionSoapIn">
+    <wsdl:part name="parameters" element="tns:receiveQuestion" />
+  </wsdl:message>
+  <wsdl:message name="receiveQuestionSoapOut">
+    <wsdl:part name="parameters" element="tns:receiveQuestionResponse" />
+  </wsdl:message>
+  <wsdl:message name="receiveQuestion2SoapIn">
+    <wsdl:part name="parameters" element="tns:receiveQuestion2" />
+  </wsdl:message>
+  <wsdl:message name="receiveQuestion2SoapOut">
+    <wsdl:part name="parameters" element="tns:receiveQuestion2Response" />
+  </wsdl:message>
+  <wsdl:message name="receiveMobQuestionSoapIn">
+    <wsdl:part name="parameters" element="tns:receiveMobQuestion" />
+  </wsdl:message>
+  <wsdl:message name="receiveMobQuestionSoapOut">
+    <wsdl:part name="parameters" element="tns:receiveMobQuestionResponse" />
+  </wsdl:message>
+  <wsdl:message name="receiveScriptQuestionSoapIn">
+    <wsdl:part name="parameters" element="tns:receiveScriptQuestion" />
+  </wsdl:message>
+  <wsdl:message name="receiveScriptQuestionSoapOut">
+    <wsdl:part name="parameters" element="tns:receiveScriptQuestionResponse" />
+  </wsdl:message>
+  <wsdl:message name="correctAnswerSoapIn">
+    <wsdl:part name="parameters" element="tns:correctAnswer" />
+  </wsdl:message>
+  <wsdl:message name="correctAnswerSoapOut">
+    <wsdl:part name="parameters" element="tns:correctAnswerResponse" />
+  </wsdl:message>
+  <wsdl:message name="receiveQuestionHttpGetIn">
+    <wsdl:part name="orderNO" type="s:string" />
+    <wsdl:part name="gameId" type="s:string" />
+    <wsdl:part name="questionType" type="s:string" />
+    <wsdl:part name="question" type="s:string" />
+    <wsdl:part name="questionPic" type="s1:StringArray" />
+  </wsdl:message>
+  <wsdl:message name="receiveQuestionHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="receiveQuestion2HttpGetIn">
+    <wsdl:part name="orderNO" type="s:string" />
+    <wsdl:part name="gameId" type="s:string" />
+    <wsdl:part name="questionType" type="s:string" />
+    <wsdl:part name="question" type="s:string" />
+    <wsdl:part name="questionPic" type="s1:StringArray" />
+    <wsdl:part name="expiredSeconds" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="receiveQuestion2HttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="receiveMobQuestionHttpGetIn">
+    <wsdl:part name="orderNO" type="s:string" />
+    <wsdl:part name="gameId" type="s:string" />
+    <wsdl:part name="questionType" type="s:string" />
+    <wsdl:part name="question" type="s:string" />
+    <wsdl:part name="questionPic" type="s1:StringArray" />
+    <wsdl:part name="expiredSeconds" type="s:string" />
+    <wsdl:part name="callback" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="receiveMobQuestionHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="receiveScriptQuestionHttpGetIn">
+    <wsdl:part name="orderNO" type="s:string" />
+    <wsdl:part name="gameId" type="s:string" />
+    <wsdl:part name="questionType" type="s:string" />
+    <wsdl:part name="question" type="s:string" />
+    <wsdl:part name="questionPic" type="s:string" />
+    <wsdl:part name="expiredSeconds" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="receiveScriptQuestionHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="correctAnswerHttpGetIn">
+    <wsdl:part name="orderNO" type="s:string" />
+    <wsdl:part name="gameId" type="s:string" />
+    <wsdl:part name="questionType" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="correctAnswerHttpGetOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="receiveQuestionHttpPostIn">
+    <wsdl:part name="orderNO" type="s:string" />
+    <wsdl:part name="gameId" type="s:string" />
+    <wsdl:part name="questionType" type="s:string" />
+    <wsdl:part name="question" type="s:string" />
+    <wsdl:part name="questionPic" type="s1:StringArray" />
+  </wsdl:message>
+  <wsdl:message name="receiveQuestionHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="receiveQuestion2HttpPostIn">
+    <wsdl:part name="orderNO" type="s:string" />
+    <wsdl:part name="gameId" type="s:string" />
+    <wsdl:part name="questionType" type="s:string" />
+    <wsdl:part name="question" type="s:string" />
+    <wsdl:part name="questionPic" type="s1:StringArray" />
+    <wsdl:part name="expiredSeconds" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="receiveQuestion2HttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="receiveMobQuestionHttpPostIn">
+    <wsdl:part name="orderNO" type="s:string" />
+    <wsdl:part name="gameId" type="s:string" />
+    <wsdl:part name="questionType" type="s:string" />
+    <wsdl:part name="question" type="s:string" />
+    <wsdl:part name="questionPic" type="s1:StringArray" />
+    <wsdl:part name="expiredSeconds" type="s:string" />
+    <wsdl:part name="callback" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="receiveMobQuestionHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="receiveScriptQuestionHttpPostIn">
+    <wsdl:part name="orderNO" type="s:string" />
+    <wsdl:part name="gameId" type="s:string" />
+    <wsdl:part name="questionType" type="s:string" />
+    <wsdl:part name="question" type="s:string" />
+    <wsdl:part name="questionPic" type="s:string" />
+    <wsdl:part name="expiredSeconds" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="receiveScriptQuestionHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:message name="correctAnswerHttpPostIn">
+    <wsdl:part name="orderNO" type="s:string" />
+    <wsdl:part name="gameId" type="s:string" />
+    <wsdl:part name="questionType" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="correctAnswerHttpPostOut">
+    <wsdl:part name="Body" element="tns:string" />
+  </wsdl:message>
+  <wsdl:portType name="QuestionReceiverSoap">
+    <wsdl:operation name="receiveQuestion">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">接收来自机器人服务器提交的题目(questionType:1验证码，2密保卡）(question:题目描述可为空)(quesitonPic:二进制图片)，成功返回0</wsdl:documentation>
+      <wsdl:input message="tns:receiveQuestionSoapIn" />
+      <wsdl:output message="tns:receiveQuestionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="receiveQuestion2">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">接收来自机器人服务器提交的题目(questionType:1验证码，2密保卡）(question:题目描述可为空)(quesitonPic:二进制图片)(expiredSeconds:超时秒数)，成功返回0</wsdl:documentation>
+      <wsdl:input message="tns:receiveQuestion2SoapIn" />
+      <wsdl:output message="tns:receiveQuestion2SoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="receiveMobQuestion">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">接收来自手机端请求题目(questionType:1验证码，2密保卡）(question:题目描述可为空)(quesitonPic:二进制图片)(expiredSeconds:超时秒数)(callback:接收地址)，成功返回0</wsdl:documentation>
+      <wsdl:input message="tns:receiveMobQuestionSoapIn" />
+      <wsdl:output message="tns:receiveMobQuestionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="receiveScriptQuestion">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">接收来自脚本端请求题目(questionType:1验证码，2密保卡）(question:题目描述可为空)(quesitonPic:二进制图片流)(expiredSeconds:超时秒数)，成功返回0</wsdl:documentation>
+      <wsdl:input message="tns:receiveScriptQuestionSoapIn" />
+      <wsdl:output message="tns:receiveScriptQuestionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="correctAnswer">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">orderNO的订单回答正确了(questionType:1验证码，2密保卡），成功返回0</wsdl:documentation>
+      <wsdl:input message="tns:correctAnswerSoapIn" />
+      <wsdl:output message="tns:correctAnswerSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="QuestionReceiverHttpGet">
+    <wsdl:operation name="receiveQuestion">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">接收来自机器人服务器提交的题目(questionType:1验证码，2密保卡）(question:题目描述可为空)(quesitonPic:二进制图片)，成功返回0</wsdl:documentation>
+      <wsdl:input message="tns:receiveQuestionHttpGetIn" />
+      <wsdl:output message="tns:receiveQuestionHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="receiveQuestion2">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">接收来自机器人服务器提交的题目(questionType:1验证码，2密保卡）(question:题目描述可为空)(quesitonPic:二进制图片)(expiredSeconds:超时秒数)，成功返回0</wsdl:documentation>
+      <wsdl:input message="tns:receiveQuestion2HttpGetIn" />
+      <wsdl:output message="tns:receiveQuestion2HttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="receiveMobQuestion">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">接收来自手机端请求题目(questionType:1验证码，2密保卡）(question:题目描述可为空)(quesitonPic:二进制图片)(expiredSeconds:超时秒数)(callback:接收地址)，成功返回0</wsdl:documentation>
+      <wsdl:input message="tns:receiveMobQuestionHttpGetIn" />
+      <wsdl:output message="tns:receiveMobQuestionHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="receiveScriptQuestion">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">接收来自脚本端请求题目(questionType:1验证码，2密保卡）(question:题目描述可为空)(quesitonPic:二进制图片流)(expiredSeconds:超时秒数)，成功返回0</wsdl:documentation>
+      <wsdl:input message="tns:receiveScriptQuestionHttpGetIn" />
+      <wsdl:output message="tns:receiveScriptQuestionHttpGetOut" />
+    </wsdl:operation>
+    <wsdl:operation name="correctAnswer">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">orderNO的订单回答正确了(questionType:1验证码，2密保卡），成功返回0</wsdl:documentation>
+      <wsdl:input message="tns:correctAnswerHttpGetIn" />
+      <wsdl:output message="tns:correctAnswerHttpGetOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="QuestionReceiverHttpPost">
+    <wsdl:operation name="receiveQuestion">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">接收来自机器人服务器提交的题目(questionType:1验证码，2密保卡）(question:题目描述可为空)(quesitonPic:二进制图片)，成功返回0</wsdl:documentation>
+      <wsdl:input message="tns:receiveQuestionHttpPostIn" />
+      <wsdl:output message="tns:receiveQuestionHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="receiveQuestion2">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">接收来自机器人服务器提交的题目(questionType:1验证码，2密保卡）(question:题目描述可为空)(quesitonPic:二进制图片)(expiredSeconds:超时秒数)，成功返回0</wsdl:documentation>
+      <wsdl:input message="tns:receiveQuestion2HttpPostIn" />
+      <wsdl:output message="tns:receiveQuestion2HttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="receiveMobQuestion">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">接收来自手机端请求题目(questionType:1验证码，2密保卡）(question:题目描述可为空)(quesitonPic:二进制图片)(expiredSeconds:超时秒数)(callback:接收地址)，成功返回0</wsdl:documentation>
+      <wsdl:input message="tns:receiveMobQuestionHttpPostIn" />
+      <wsdl:output message="tns:receiveMobQuestionHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="receiveScriptQuestion">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">接收来自脚本端请求题目(questionType:1验证码，2密保卡）(question:题目描述可为空)(quesitonPic:二进制图片流)(expiredSeconds:超时秒数)，成功返回0</wsdl:documentation>
+      <wsdl:input message="tns:receiveScriptQuestionHttpPostIn" />
+      <wsdl:output message="tns:receiveScriptQuestionHttpPostOut" />
+    </wsdl:operation>
+    <wsdl:operation name="correctAnswer">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">orderNO的订单回答正确了(questionType:1验证码，2密保卡），成功返回0</wsdl:documentation>
+      <wsdl:input message="tns:correctAnswerHttpPostIn" />
+      <wsdl:output message="tns:correctAnswerHttpPostOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="QuestionReceiverSoap" type="tns:QuestionReceiverSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="receiveQuestion">
+      <soap:operation soapAction="http://tempuri.org/receiveQuestion" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="receiveQuestion2">
+      <soap:operation soapAction="http://tempuri.org/receiveQuestion2" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="receiveMobQuestion">
+      <soap:operation soapAction="http://tempuri.org/receiveMobQuestion" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="receiveScriptQuestion">
+      <soap:operation soapAction="http://tempuri.org/receiveScriptQuestion" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="correctAnswer">
+      <soap:operation soapAction="http://tempuri.org/correctAnswer" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="QuestionReceiverSoap12" type="tns:QuestionReceiverSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="receiveQuestion">
+      <soap12:operation soapAction="http://tempuri.org/receiveQuestion" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="receiveQuestion2">
+      <soap12:operation soapAction="http://tempuri.org/receiveQuestion2" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="receiveMobQuestion">
+      <soap12:operation soapAction="http://tempuri.org/receiveMobQuestion" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="receiveScriptQuestion">
+      <soap12:operation soapAction="http://tempuri.org/receiveScriptQuestion" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="correctAnswer">
+      <soap12:operation soapAction="http://tempuri.org/correctAnswer" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="QuestionReceiverHttpGet" type="tns:QuestionReceiverHttpGet">
+    <http:binding verb="GET" />
+    <wsdl:operation name="receiveQuestion">
+      <http:operation location="/receiveQuestion" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="receiveQuestion2">
+      <http:operation location="/receiveQuestion2" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="receiveMobQuestion">
+      <http:operation location="/receiveMobQuestion" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="receiveScriptQuestion">
+      <http:operation location="/receiveScriptQuestion" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="correctAnswer">
+      <http:operation location="/correctAnswer" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="QuestionReceiverHttpPost" type="tns:QuestionReceiverHttpPost">
+    <http:binding verb="POST" />
+    <wsdl:operation name="receiveQuestion">
+      <http:operation location="/receiveQuestion" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="receiveQuestion2">
+      <http:operation location="/receiveQuestion2" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="receiveMobQuestion">
+      <http:operation location="/receiveMobQuestion" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="receiveScriptQuestion">
+      <http:operation location="/receiveScriptQuestion" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="correctAnswer">
+      <http:operation location="/correctAnswer" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="QuestionReceiver">
+    <wsdl:port name="QuestionReceiverSoap" binding="tns:QuestionReceiverSoap">
+      <soap:address location="http://192.168.36.118:89/questionreceiver.asmx" />
+    </wsdl:port>
+    <wsdl:port name="QuestionReceiverSoap12" binding="tns:QuestionReceiverSoap12">
+      <soap12:address location="http://192.168.36.118:89/questionreceiver.asmx" />
+    </wsdl:port>
+    <wsdl:port name="QuestionReceiverHttpGet" binding="tns:QuestionReceiverHttpGet">
+      <http:address location="http://192.168.36.118:89/questionreceiver.asmx" />
+    </wsdl:port>
+    <wsdl:port name="QuestionReceiverHttpPost" binding="tns:QuestionReceiverHttpPost">
+      <http:address location="http://192.168.36.118:89/questionreceiver.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

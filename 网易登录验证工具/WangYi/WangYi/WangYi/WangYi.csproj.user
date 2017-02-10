@@ -1,0 +1,5 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <StartArguments>E:\拼图\\ 测试订单 0 0 游戏名称：阴阳师；游戏大区：一区；游戏服务器：对酒当歌；游戏帐号：t18367986898@163.com；游戏密码：1239196292； 0</StartArguments>
+  </PropertyGroup>
+</Project>

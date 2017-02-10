@@ -1,0 +1,570 @@
+
+<body jquery1481716260467="29"><!--header-->
+<div onmouseleave="document.getelementbyid('code').style.display='none';" onmouseenter="document.getelementbyid('code').style.display='block';" id=urscode style="right: 0px; position: fixed; text-align: center; top: 100px; _position: absolute"><img style="position: relative" alt=抽奖 src="/images2/red-packet.png?v=20151111"> 
+<div id=code style="border-top: rgb(221,221,221) 2px solid; height: 150px; border-right: rgb(221,221,221) 2px solid; background: white; right: 66px; border-bottom: rgb(221,221,221) 2px solid; position: absolute; border-left: rgb(221,221,221) 2px solid; display: none; top: 20px; width: 114px; border-radius: 5px"><a style="cursor: pointer; text-decoration: none" href="https://reg.163.com/yixin/caipiaoact.do#from=ursdlh" target=_blank alt?网易帐号中心微信?><!-- <p style="margin:2px 0 5px 10px;text-align:left;color:white">易信</p>
+            <img width="100" height="100" src="/images2/yixin-code.jpg"/> --><img style="right: -14px; position: absolute; top: 30px" src="/images2/anglew.png?v=20150729" width=14 height=22> 
+<p style="font-weight: bold; color: black; margin: 6px 0px 5px">微信扫一扫</p><img style="border-top: rgb(230,230,230) 1px solid; border-right: rgb(230,230,230) 1px solid; border-bottom: rgb(230,230,230) 1px solid; border-left: rgb(230,230,230) 1px solid" src="/images2/weixin-code.jpg?v=20150729" width=100 height=100> </a></div></div>
+<div class=header style="position: relative">
+<div class=header_tool><span class=user163_info><span id=sayhello>晚上好， </span>
+<script type=text/javascript src="/js/nav163.js?v=20140909"></script>
+<span id=user163 class=user163_box><span id=user163_name title=atau49@163.com class=user163_name>atau49@163.com</span>
+<ul id=user163list style="display: none">
+<li><a href="http://entry.mail.163.com/coremail/fcg/ntesdoor2?verifycookie=1&amp;lightweight=1" target=_blank>进入我的邮箱</a>
+<li><a href="http://epay.163.com/index.jsp#from=jsdh" target=_blank>进入我的网易宝</a>
+<li><a href="http://mall.163.com/#from=jsdh" target=_blank>进入网易商城</a>
+<li><a href="http://caipiao.163.com/#from=jsdh" target=_blank>进入我的彩票</a>
+<li><a href="http://baoxian.163.com/car/?from=jsdh" target=_blank>进入我的车险</a>
+<li><a href="http://yxp.163.com/?sss=fromurs" target=_blank>进入我的印像派</a>
+<li><a href="http://blog.163.com/passportin.do?entry=urs" target=_blank>进入我的博客</a></li></ul></span></span><br><a href="http://www.163.com/" target=_blank>网易首页</a> <a href="http://survey2.163.com/html/passport_feedback/paper.html" target=_blank>反馈意见</a> <a href="http://help.163.com/special/sp/urs_index.html" target=_blank>帮助</a> <a href="http://reg.163.com/logout.jsp?url=http://reg.163.com">安全退出</a></div><a href="http://reg.163.com/"><img title=网易帐号中心 class=logo border=0 alt=网易帐号中心 src="/gaiban/images/logo.png?v=20161205" width=155 height=50></a> </div>
+<script type=text/javascript>
+//概率显示广告 begin
+(function(window, $){
+
+var possibleidx;
+
+// 获取随机的数组索引，参数为数组长度
+var getpossiblearrayindex = function(arrlength){
+  return math.floor(math.random()*10) % arrlength;
+}
+
+// 广告
+var mainbulletinheaderhtml = "";
+mainbulletinheaderarr = mainbulletinheaderhtml.split("#$");
+possibleidx = getpossiblearrayindex(mainbulletinheaderarr.length);
+mainbulletinheaderhtml = mainbulletinheaderarr[possibleidx];
+$(".mainbulletinheaderhtmlcontainer").html(mainbulletinheaderhtml);
+
+})(window, jquery);
+//概率显示广告 end
+</script>
+
+<script type=text/javascript>
+    var _gaq = _gaq || [];
+    _gaq.push(['_setaccount', 'ua1435545636633'],['_setlocalgifpath', '/ua1435545636633/__utm.gif'],['_setlocalservermode']);
+    _gaq.push(['_addorganic','baidu','word']);_gaq.push(['_addorganic','soso','w']);_gaq.push(['_addorganic','youdao','q']);
+    _gaq.push(['_addorganic','sogou','query']);_gaq.push(['_addorganic','so.360.cn','q']);
+    _gaq.push(['_trackpageview']);_gaq.push(['trackpageloadtime']);
+    (function() {
+    var ga = document.createelement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = '/gaiban/js/maidian.js';
+    var s = document.getelementsbytagname('script')[0]; s.parentnode.insertbefore(ga, s);
+    })();
+</script>
+
+<ul class=menu>
+<li><a id=myaccount class="m1 " href="http://reg.163.com/main.jsp"><span>我的帐号</span></a> </li>
+<li><a id=accountmanage class="m2  m2_hover" href="https://reg.163.com/account/accountinfo.jsp"><span>帐号管理</span></a> </li>
+<li><a class="m3 " href="https://reg.163.com/mibao/controller/goindex.jsp"><span>密保管理</span></a> </li>
+<li class=end></li></ul><!--头部 结束--><!--主体 开始-->
+<div class=main jquery1481716260467="28">
+<div class=main_top></div>
+<div class=main_con jquery1481716260467="27">
+<div class=left_pan>
+<dl id=left_menu class=left_menu>
+<dt><a href="https://reg.163.com/account/accountinfo.jsp">帐号管理</a> </dt>
+<dd><a href="https://reg.163.com/setinfo/changepwd_1.jsp?username=atau49">修改密码</a> </dd>
+<dd><a href="https://reg.163.com/chg/changeinfo_0.jsp?username=atau49">修改基本信息</a> </dd>
+<dd><a href="https://reg.163.com/chg/showbaomiinfo.jsp">帐号安全设置</a> </dd>
+<dd class=act_dd style="position: relative"><a href="https://reg.163.com/mibao/controller/mob/index.jsp">安全手机<span style="height: 14px; background: url(/gaiban/images/hot.png?v=20160229) no-repeat 0px 0px; position: absolute; zoom: 1; left: 77px; display: inline-block; top: 7px; width: 20px; _background: url(/gaiban/images/hot8.png?v=20160229) 0 0 no-repeat">&nbsp;</span></a> </dd>
+<dd><a href="https://reg.163.com/account/accountsecquestionindex.do">安全问题</a> </dd>
+<dd><a href="https://reg.163.com/jihuo/jihuo.jsp">开通游戏付费</a> </dd>
+<dd><a href="https://reg.163.com/mibao/controller/smdj/index.jsp">实名认证</a> </dd>
+<dd><a href="https://reg.163.com/account/mutipleacctmgr.jsp">多帐号关联</a> </dd>
+<dt><a href="https://reg.163.com/mibao/controller/goindex.jsp">密保管理</a> </dt>
+<dd><a href="https://reg.163.com/otp/controller/index.jsp">将军令</a> </dd>
+<dd><a href="https://reg.163.com/mibao/controller/ppc/index.jsp">密保卡</a> </dd></dl></div>
+<script type=text/javascript>
+	window.onload = function(){
+		function stopdefault(e) {
+		    if (e && e.preventdefault)
+		        e.preventdefault();
+		    else
+		        window.event.returnvalue = false;
+		    return false;
+		}
+		var myaccount = document.getelementbyid("myaccount");
+		var accountmanage = document.getelementbyid("accountmanage");
+	    if (myaccount.addeventlistener) {
+	        myaccount.addeventlistener("click", function(e){
+	        	stopdefault(e);
+	            _gaq.push(['_trackevent', '我的帐号 main弹窗',location.href]);
+	            window.location.replace("http://reg.163.com/main.jsp");
+	        });
+	    } else if (myaccount.attachevent) {
+	        myaccount.attachevent("onclick", function(e){
+	        	stopdefault(e);
+	            _gaq.push(['_trackevent', '我的帐号 main弹窗',location.href]);
+	            window.location.replace("http://reg.163.com/main.jsp");
+	        });
+	    }
+	    if (accountmanage.addeventlistener) {
+	        accountmanage.addeventlistener("click", function(e){
+	        	stopdefault(e);
+	            _gaq.push(['_trackevent', '帐号管理 修改密保弹窗',location.href]);
+	            window.location.replace("https://reg.163.com/account/accountinfo.jsp");
+	        });
+	    } else if (accountmanage.attachevent) {
+	        accountmanage.attachevent("onclick", function(e){
+	        	stopdefault(e);
+	           _gaq.push(['_trackevent', '帐号管理 修改密保弹窗',location.href]);
+	           window.location.replace("https://reg.163.com/account/accountinfo.jsp");
+	        });
+	    }
+		var leftmenu = document.getelementbyid('left_menu');
+		var as = leftmenu.getelementsbytagname('a');
+		for(var i = 0;i < as.length;i++){
+		    as[i].onclick = function(){
+		         _gaq.push(['_trackevent', '校验页面中用户点击左侧导航栏次数',location.href]);
+		    }
+		}
+	}
+    </script>
+<!--header end --><!--body start-->
+<div class="right_pan safe_mibao" style="position: relative" jquery1481716260467="26">
+<h2 class=clum_title><a href="/account/accountinfo.jsp">帐号管理</a> &gt;&gt;手机服务 </h2>
+<p class=nav_safe_intro><i class=icon_safe_71></i><span>为了您的帐号安全，请先从以下安全工具中任选1种进行身份验证</span></p>
+<form id=form onsubmit="return checkdata(this);" method=post name=form action=https://reg.163.com/mibao/verifymibao2.do jquery1481716260467="25"><input id=username type=hidden value=atau49 name=username jquery1481716260467="6"> <input id=noheader type=hidden value=0 name=noheader jquery1481716260467="7"> <input id=successurl type=hidden value=/mibao/mob/replacebyphone_1.do?noheader=0&amp;url= name=successurl jquery1481716260467="8"> <input id=navitem type=hidden value=nav_item_4 name=navitem jquery1481716260467="9"> <input id=menuitem type=hidden value=menu_item_1 name=menuitem jquery1481716260467="10"> <input id=sessionname type=hidden value=session_mibao2_replacemobile name=sessionname jquery1481716260467="11"> <input id=channel type=hidden value=mibao2_replacemobile name=channel jquery1481716260467="12"> <input id=verifytoken type=hidden value=false name=verifytoken jquery1481716260467="13"> <input id=verifyquestion type=hidden value=true name=verifyquestion jquery1481716260467="14"> 
+<ul class=main_form jquery1481716260467="24">
+<li jquery1481716260467="23">
+<div class=fm_left>安全工具：</div>
+<div class=fm_right jquery1481716260467="22">
+<div id=question1_sel class=t_iselect style="z-index: 3" jquery1481716260467="20"><em></em><span>安全问题</span> 
+<ul class=t_iselect_list>
+<li val="1"><a href="javascript:;">安全手机</a> </li>
+<li val="2"><a href="javascript:;">安全问题</a> </li></ul><input id=verifytype type=hidden value=2 name=verifytype autocomplete="off" jquery1481716260467="15"> </div></div><!--密保卡信息--><!--密保卡信息结束--><!--安全手机信息开始--></li>
+<li id=li_getsmsbtn style="display: none">
+<div class=fm_left><i class=icon_safe_72></i>手机号码：</div>
+<div class=fm_right>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class=bluelink href="http://help.163.com/13/0627/11/92cga7mi00754io0.html?from=urs" target=_blank>手机无法验证？</a><br></p>
+<div id=nofeesmslist class=unfeeobj style="display: none" jquery1481716260467="31"><span class=f_btn><a id=getsmsbtn class=r_btn jquery1481716260467="21">获取短信验证码</a></span> <span id=sendsmstip class="info importanttip">系统异常</span><span id=countdowntip class="info importanttip"></span></div></div><!-- 2013-11-08 add by zhouqing -- begin --><input disabled id=upsms type=hidden value=1 name=upsms jquery1481716260467="16"> </li>
+<li id=feesmslist style="display: none" jquery1481716260467="34"><!-- end --></li>
+<li id=li_mobcheckcode class=unfeeobj style="display: none" jquery1481716260467="32">
+<div class=fm_left>短信验证码：</div>
+<div class=fm_right style="position: relative"><label id=mobileholder class=textholder for=mobcheckcode>请输入短信验证码</label> <input id=mobcheckcode title=短信验证码 class=input type=mobcheckcode name=mobcheckcode jquery1481716260467="17"><span id=errmobcheckcode class=err></span> </div><!--安全手机信息结束--><!--将军令开始--><!--将军令结束--><!--安全问题开始--></li>
+<li id=li_question1>
+<div class=fm_left><i class=icon_safe_81></i>问题一：</div>
+<div class=fm_right>您父亲的生日是？ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class=bluelink href="http://help.163.com/13/0621/16/91tj12br00754io0.html?from=urs" target=_blank>安全问题无法验证？</a> </div></li>
+<li id=li_answer1>
+<div class=fm_left>答案：</div>
+<div class=fm_right><input id=answer2 title=答案一 class="input js_checkinput" value=19501105 name=answer2 autocomplete="off" data-isd="true" jquery1481716260467="2"> <span id=erranswer1 class="js_tip err2 hide"></span>
+<div id=pass_answer_info class=mibao_tishi>8位数字的日期格式，例如”19821201“ </div></div></li>
+<li id=li_question2>
+<div class=fm_left><i class=icon_safe_81></i>问题二：</div>
+<div class=fm_right>您配偶的生日是？ </div></li>
+<li id=li_answer2>
+<div class=fm_left>答案：</div>
+<div class=fm_right><input id=answer1 title=答案一 class="input js_checkinput" value=19801205 name=answer1 autocomplete="off" data-isd="true" jquery1481716260467="3"> <span id=erranswer2 class="js_tip err2 hide"></span>
+<div id=pass_answer_info class=mibao_tishi>8位数字的日期格式，例如”19821201“ </div></div></li>
+<li id=li_question3>
+<div class=fm_left><i class=icon_safe_81></i>问题三：</div>
+<div class=fm_right>您母亲的生日是？ </div></li>
+<li id=li_answer3>
+<div class=fm_left>答案：</div>
+<div class=fm_right><input id=answer3 title=答案一 class="input js_checkinput" value=19501225 name=answer3 autocomplete="off" data-isd="true" jquery1481716260467="4"> <span id=erranswer3 class="js_tip err2 hide"></span>
+<div id=pass_answer_info class=mibao_tishi>8位数字的日期格式，例如”19821201“ </div></div></li>
+<li id=li_answer_slide style="padding-left: 152px">
+<div id=setpwd>
+<div id=scaptcha class="scaptcha slidebg-slider slidebg-slider-horizontal" style="float: left; width: 230px" done0="0" done1="0">
+<div class=puzzlebg style="display: none; bottom: 31px"><img style="height: auto; width: 226px; borderradius: 8px" src="http://nos.netease.com/nisp-captcha/1470919783874_1248110707?nosaccesskeyid=0356d3406e0d421389bcbb5c28b59c39&amp;expires=1481717005&amp;signature=1bmpcu45rzuw%2bwdcbzqacm%2becuytmppyyzf33um4g48%3d">
+<div class=puzzlefg style="left: 100px; opacity: 1"><img style="height: auto; width: 42px" src="http://nos.netease.com/nisp-captcha/1470919783874_1403644692?nosaccesskeyid=0356d3406e0d421389bcbb5c28b59c39&amp;expires=1481717005&amp;signature=6ttdj5dnd%2fcxoplsczoknvx7mkfuycftnpgpb2ziick%3d"></div></div>
+<div class=slidebg style="height: 22px; width: 226px; borderradius: 11.3px">
+<div class=slidefg style="left: 96px" jquery1481716260467="35"><img style="height: auto; width: 50px" src="http://captcha.reg.163.com/v1_5/images/slider_valid.png"></div>
+<div class=hinttxt style="position: relative; left: 25px; display: none; line-height: 22px; opacity: 1">按住滑块，拖动完成上方拼图</div></div>
+<div class=statustxt style="height: 22px; margin-left: 238px; display: block; line-height: 22px"></div></div><input id=pwd type=hidden value=mg+aky2m6rxdn5m8hpb1kax3wfbuitmy04tltfc4+kfddyk/jbqvaqulfk/cr7wtv+tjv6gh+opr20afytrzyjmux84clbct/jkh89kahei= name=pwd jquery1481716260467="18"> 
+<div id=x_err class=err style="float: left; display: none"></div></div><!--安全问题开始--></li>
+<li style="padding-left: 100px"><span id=err_inf class=err></span></li>
+<li id=nextbtn class=unfeeobj style="display: block" jquery1481716260467="33">
+<div class=fm_left>&nbsp;</div>
+<div class=fm_right><span class=f_btn><input class=r_btn type=submit value=下一步 name=submit jquery1481716260467="19"></span> </div></li></ul></form>
+<div id=describe class=mb_describe>
+<div class=g_line></div>
+<div style="padding-left: 30px">
+<h3>温馨提示：</h3>
+<p class=gray7d>1.当您的手机因为停机、丢失等原因无法验证时，您可以通过验证<a href="https://reg.163.com/mibao/controller/mob/index.jsp">安全问题方式</a>更换新的手机。</p>
+<p class=gray7d>2.如果安全问题答案均遗忘，请联系客服<a href="https://mima.163.com" target=_blank>申请帐号修复</a>。</p></div></div></div><!--body end--><!--bottom start-->
+<script type=text/javascript>
+window.isautosend = true;
+</script>
+
+<script type=text/javascript charset=gbk src="/mibao/js/formutil.js"></script>
+
+<script language=javascript>
+function init(){
+
+		document.getelementbyid("li_getsmsbtn").style.display = "";
+        document.getelementbyid("li_mobcheckcode").style.display = "";
+
+        var liotppass=document.getelementbyid("li_otppass")
+		if(liotppass!=null) {
+			liotppass.style.display = "none";
+
+		}
+}
+
+function checkchange(obj){
+    if(obj){
+        var value = obj.value;
+
+         var liquestion1=document.getelementbyid("li_question1");
+         var liquestion2=document.getelementbyid("li_question2");
+         var liquestion3=document.getelementbyid("li_question3");
+         var answer1=document.getelementbyid("li_answer1");
+         var answer2=document.getelementbyid("li_answer2");
+         var answer3=document.getelementbyid("li_answer3");
+         var answers=document.getelementbyid("li_answer_slide");
+        if(value == "1"){
+            document.getelementbyid("li_getsmsbtn").style.display = "";
+            document.getelementbyid("li_mobcheckcode").style.display = "";
+            document.getelementbyid("nofeesmslist").style.display = "";
+
+				if(liquestion1!=null||liquestion1!=null||liquestion1!=null) {
+					liquestion1.style.display = "none";
+					liquestion2.style.display = "none";
+					liquestion3.style.display = "none";
+
+					answer1.style.display = "none";
+		       		answer2.style.display = "none";
+		       		answer3.style.display = "none";
+                    answers.style.display = "none";
+				}
+        }else if(value == "2"){
+           	document.getelementbyid("li_getsmsbtn").style.display = "none";
+            document.getelementbyid("li_mobcheckcode").style.display = "none";
+
+				if(liquestion1!=null||liquestion1!=null||liquestion1!=null) {
+					liquestion1.style.display = "";
+					liquestion2.style.display = "";
+					liquestion3.style.display = "";
+
+		       		answer1.style.display = "";
+		       		answer2.style.display = "";
+		       		answer3.style.display = "";
+                    answers.style.display = "";
+		    	}
+        }
+    }
+}
+
+var leftime;
+var getsmsbtn = $('#getsmsbtn');
+var mobcheckcode = $('#mobcheckcode');
+var countdowntip = $('#countdowntip');
+var sendsmstip = $('#sendsmstip');
+
+var intervalid ;
+var countdowntime ;
+var time = 60;
+var ifmorereactivate=false;
+
+$(document).ready(function(){
+		$(".t_iselect").iselect().bind("i.change", function(){
+		// 2013-11-08 add by zhouqing -- begin
+
+		if($(this).attr("val") == "1"){
+			$(".unfeeobj").show();
+			$("#feesmslist").hide();
+		}else{
+			$(".unfeeobj").hide();
+			$("#feesmslist").hide();
+			$("#nextbtn").show();
+		}
+
+		// -- end
+
+
+			checkchange($(this).find("input:hidden")[0]);
+		});
+		$("#mobcheckcode").blur(function(){
+			if(!this.value){
+				$("#mobileholder").removeclass("hide");
+			}
+		});
+		$("#mobcheckcode").focus(function(){
+			$("#mobileholder").addclass("hide");
+		});
+		 getsmsbtn.bind('click',function(){
+			sendmessage();
+		});
+		init();
+
+
+		// 2013-11-15 add by zhouqing -- begin
+		window.isautosend && sendmessage("notsend");
+		// -- end
+
+});
+
+function sendmessage(param){
+	var href = window.location.href;
+	var protocol = "http";
+	if(href.indexof("https") == 0)
+		protocol = "https";
+	$.ajax({
+   		type: "post",
+   		async : false,
+   		url: protocol + "://reg.163.com/services/sendsms4login",
+   		//data:{channel:'mibao2_replacemobile'},
+		// 2013-11-15 add by zhouqing -- begin
+		data: (function(){
+			var p = {channel:'mibao2_replacemobile'};
+			param==="notsend" && (p.isnotsend = "1");
+			return p;
+		})(),
+		// -- end
+   		success:onsuccess
+	});
+}
+
+//提示问题答案检查
+//重写 by 郑弋天 20130621
+$('.js_checkinput').blur(function(){
+	checkanswer($(this));
+});
+function checkanswer($ipt){
+	var val = $ipt.val(),
+		$tip = $ipt.siblings('.js_tip'),
+		isdate = $ipt.attr('data-isd')
+	;
+	if(getstrlength(val) < 1 || getstrlength(val) > 30){
+		$tip.text('答案需为1到30位');
+		$tip.css('display', 'inline-block');
+		return false;
+	}else{
+    	$tip.hide();
+    }
+    return true;
+    // else if(isdate == 'true'){
+    //     if (!/^\d{8}$/.test(val)) {
+    //         $tip.text('请输入日期，例如“19910101”');
+    //         $tip.css('display', 'inline-block');
+    //         return false;
+    //     }else{
+    //         $tip.hide();
+    //     }
+    // }else if(isdate == 'false' && (!(ischinese(val) || isalphabet(val)))){
+    //     $tip.text('请输入中文或者英文');
+    //     $tip.css('display', 'inline-block');
+    //     return false;
+    // }else
+}
+// function checkanswer(formname, elementname, errtipname, isdate, erranswerid){
+
+//     var haserr = false;
+//     var form = document.getelementbyid(formname);
+// 	var elem = document.getelementbyid(elementname);
+// 	var tip = document.getelementbyid(erranswerid);
+
+// 	if(form && elem && tip){
+// 		var val = elem.value;
+//         if(getstrlength(val) < 4){
+// 		    haserr = true;
+// 		    tip.innerhtml = "请输入问题答案";
+// 		    tip.style.display = "inline-block";
+// 	    }
+// 	    else if(isdate == 'true'){
+// 	    	if (!/^\d{8}$/.test(val)) {
+// 		         haserr = true;
+// 		         tip.innerhtml = "请输入日期，例如“19910101”";
+// 		    	 tip.style.display = "inline-block";
+// 		    }else{
+// 		    	tip.style.display = "none";
+// 		    }
+// 	    }
+// 	    else if(isdate == 'false' && (!(ischinese(val) || isalphabet(val)))){
+// 		    haserr = true;
+// 		    tip.innerhtml = "请输入中文或者英文";
+// 		    tip.style.display = "inline-block";
+// 	    }
+// 	    else{
+// 	    	tip.style.display = "none";
+// 	    }
+// 	}
+// 	return haserr;
+// }
+
+//取字符串长度，中文算2个字符
+function getstrlength(str){
+	var chineseregex = /[^\x00-\xff]/g;
+	var strlength = str.replace(chineseregex,"**").length;
+	return strlength;
+}
+
+//汉字校验
+function ischinese(str)
+{
+	var reg=/^[\u4e00-\u9fa5]+$/i;
+	if(reg.test(str))
+	{//中文校验成功
+		return true;
+	}else
+	{
+		return false;
+	}
+}
+//英文校验
+function isalphabet(str)
+{
+	var reg=/^[abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz]+$/i;
+	if(reg.test(str))
+	{//英文校验成功
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+function count(){
+	if(countdowntime == 0){
+		clearinterval(intervalid);
+		getsmsbtn.show();
+		countdowntip.attr('innerhtml','');
+		sendsmstip.attr('innerhtml','');
+		countdowntime = time;
+		return;
+	}
+	countdowntip.attr('innerhtml','还有<span style="font-size:14px; font-weight:bold; margin:0 3px; color:red;">' + countdowntime + '</span>秒可以再次获取验证码');
+	countdowntime = countdowntime - 1;
+}
+
+function onsuccess(msg){
+	var tip = '';
+	if(msg == '200\n'){
+		tip = '短信验证码发送成功，请注意查收';
+	}else if(msg == '501\n'){
+		tip = '您获取验证码次数过多，请改天再试';
+		sendsmstip.attr('innerhtml',tip);
+		return ;
+	}
+
+	// 2013-11-08 add by zhouqing -- begin
+	else if (msg.indexof('501') !== -1 && msg.split(",").length === 3) {
+		var arr = msg.split(",");
+		$(".unfeeobj").hide();
+		var htmlstr = '<div class="fm_left">短信验证：</div><div class="fm_right"><div>请您用手机编辑短信<strong style="color:#f00;">'+arr[1]+'</strong>发送到<strong style="color:#f00;">'+arr[2]+'</strong>。<br>然后点"已经发送"按钮。</div><br /><span id="ischeckederr" style="display:none; padding-left:26px;background:url(/gaiban/images/erricon.png) no-repeat 0 -3px;color:red;"></span><br /><span class="f_btn"><a href="javascript:void(0);" class="r_btn" id="hassendbtn">已经发送</a></span><span id="ischecking" style="display:none;"><img src="/gaiban/images/loading2.gif" style="vertical-align:middle;" /> 正在验证中，请稍候。</span><span id="ischeckedok" style="display:none;"><img src="/gaiban/images/okicon.png" style="vertical-align:middle;" /> 验证成功</span></div>';
+		if(arr[1].indexof("实名认证") !== -1){
+			htmlstr += '<img src="/images2/adv/sendsmsexp.gif" width="140" height="275" style="position:absolute;top:50px;right:20px;" />';
+		}
+		$("#feesmslist").show().html(htmlstr);
+		return;
+	}
+	// -- end
+
+	// 2013-11-15 add by zhouqing -- begin
+	else if(msg.indexof('202') !== -1){
+		return;
+	}
+	// -- end
+
+	else {
+		tip = '系统异常'
+		sendsmstip.attr('innerhtml',tip);
+		return ;
+	}
+	getsmsbtn.hide();
+	sendsmstip.attr('innerhtml',tip);
+	mobcheckcode.focus();
+
+	countdowntime = time;
+	intervalid = setinterval("count()",1000);
+	$("#mobileholder").addclass("hide");
+	$("#mobcheckcode").focus();
+}
+
+// 2013-11-13 add by zhouqing -- begin
+$("#hassendbtn").live("click", function(){
+
+	var $ischecking = $("#ischecking"),
+	$hassendbtn = $(this),
+	$ischeckederr = $("#ischeckederr"),
+	$ischeckedok = $("#ischeckedok");
+
+	var lazyarr = [1000, 2000, 3000],
+	lazyidx = 0;
+
+	var href = window.location.href,
+	protocol = "http";
+	if(href.indexof("https") == 0){protocol = "https";}
+
+	(function docheck(){
+
+		$hassendbtn.hide();
+		$ischeckederr.hide();
+		$ischecking.show();
+
+		$.getjson(
+			protocol+"://reg.163.com/interfaces/urs/verifyupsms.do?type=mibao2_replacemobile",
+			//"/ftl/testdata2/reg/hassendsms.txt",
+			function(data){
+				$ischecking.hide();
+
+				if(data.retcode-0 === 200){
+					if(data.verifystatus-0 === 1){
+						$ischeckedok.show();
+						$("#mobcheckcode").val("000000");
+						$("#upsms").removeattr("disabled");
+						$("input[type='submit']").trigger("click");
+					}else{
+						if(lazyidx >= lazyarr.length){
+							if(data.verifystatus-0 === -1){
+								$ischeckederr.show().text("验证失败。短信错误，请确认已经正确编辑短信内容。");
+							}else{
+								$ischeckederr.show().text("验证失败。系统未收到短信，请确认已经正确发送。");
+							}
+							$hassendbtn.show();
+							lazyidx = 0;
+						}else{
+							$ischecking.show();
+							settimeout(docheck, lazyarr[lazyidx++]);
+						}
+					}
+				}else{
+					if(lazyidx >= lazyarr.length){
+						if(data.retcode-0 === 453){
+							$ischeckederr.show().text("用户未绑定手机");
+						}else if(data.retcode-0 === 412){
+							$ischeckederr.show().text("验证失败。您今天尝试验证的次数过多，请改天再试。");
+						}else if(data.retcode-0 === 500){
+							$ischeckederr.show().text("系统异常");
+						}else if(data.retcode-0 === 401){
+							$ischeckederr.show().text("传递的手机号错误");
+						}
+						$hassendbtn.show();
+						lazyidx = 0;
+					}else{
+						$ischecking.show();
+						settimeout(docheck, lazyarr[lazyidx++]);
+					}
+				}
+			}
+		);
+	})();
+});
+// -- end
+
+
+</script>
+
+<div class=clear></div></div>
+<div class=main_bottom></div></div><!--主体 结束--><!--版权 开始-->
+<div class=footer><a href="http://corp.163.com/eng/about/overview.html" target=_blank hasbox="2">about netease</a> - <a href="http://gb.corp.163.com/gb/about/overview.html" target=_blank>公司简介</a> - <a href="http://gb.corp.163.com/gb/contactus.html" target=_blank>联系方法</a> - <a href="http://corp.163.com/gb/job/job.html" target=_blank>招聘信息</a> - <a href="http://help.163.com/" target=_blank>客户服务</a> - <a href="http://gb.corp.163.com/gb/legal.html" target=_blank>相关法律</a> - <a href="http://emarketing.biz.163.com/" target=_blank>网络营销</a> <br>网易公司版权所有 ?1997-2016 </div><!--版权 结束-->
+<script type=text/javascript>document.cookie = "urs_analyze=1";</script>
+
+<script type=text/javascript>
+    window.captype = '2';
+</script>
+
+<script type=text/javascript src="/js2/slide/c.js?v=20160824"></script>
+
+<script type=text/javascript src="/js2/slide/index.js?v=20160824"></script>
+<!-- nielsen and devilfish --><!-- start netease devilfish 2006 -->
+<script type=text/javascript src="//analytics.163.com/ntes.js"></script>
+
+<script type=text/javascript>
+_ntes_nacc = "urs";
+neteasetracker();
+</script>
+
+<script type=text/javascript src="/js2/wda.js"></script>
+<!-- end netease devilfish 2006 --><!--bottom end--></body>

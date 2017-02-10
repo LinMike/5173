@@ -1,0 +1,77 @@
+退出信息:333050
+:False
+EndApp调用 strErrmsg:333050
+无法确认实名认证
+实名认证页面加载完毕 未设置的身份证准备判定是否实名
+数据页加载完毕 准备抓取
+登陆成功  跳转到信息页
+LoginAgainType2加载
+ConfirmLogin加载
+设置剪切板:wtwbg521
+Login加载
+登录操作开始
+SetVeryCodeLogin加载
+设置剪切板:jiele_2016hm7@163.com
+SetUserNamePwd加载
+Clac加载
+Match加载
+SearchPicBase加载
+LoadWBPic加载
+发现浏览器验证码图片被加载
+不设置窗体最前
+Common.strA3:王珍珠
+Common.strQ3:对你影响最大的人是？
+Common.strA2:王光辉
+Common.strQ2:您父亲的名字是？
+Common.strA1:应扬扬
+Common.strQ1:您配偶的名字是？
+Common.strPwd:wtwbg521
+Common.strUn:jiele_2016hm7@163.com
+Common.isDebug状态:True
+args.Length:0读取完成
+
+退出信息:333050
+:False
+EndApp调用 strErrmsg:333050
+无法确认实名认证
+实名认证页面加载完毕 未设置的身份证准备判定是否实名
+数据页加载完毕 准备抓取
+登陆成功  跳转到信息页
+LoginAgainType2加载
+ConfirmLogin加载
+设置剪切板:wtwbg521
+Login加载
+登录操作开始
+SetVeryCodeLogin加载
+设置剪切板:jiele_2016hm7@163.com
+SetUserNamePwd加载
+Clac加载
+Match加载
+SearchPicBase加载
+LoadWBPic加载
+Common.LoginFaild为真,再次登录
+发现浏览器验证码图片被加载
+ConfirmLogin加载
+设置剪切板:wtwbg521
+Login加载
+登录操作开始
+SetVeryCodeLogin加载
+设置剪切板:jiele_2016hm7@163.com
+SetUserNamePwd加载
+Clac加载
+Match加载
+SearchPicBase加载
+LoadWBPic加载
+发现浏览器验证码图片被加载
+不设置窗体最前
+Common.strA3:王珍珠
+Common.strQ3:对你影响最大的人是？
+Common.strA2:王光辉
+Common.strQ2:您父亲的名字是？
+Common.strA1:应扬扬
+Common.strQ1:您配偶的名字是？
+Common.strPwd:wtwbg521
+Common.strUn:jiele_2016hm7@163.com
+Common.isDebug状态:True
+args.Length:0读取完成
+

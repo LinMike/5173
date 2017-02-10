@@ -1,0 +1,65 @@
+int CRCGTRWD::CheckAccount()
+{
+	CString stry;
+	CString orderdata;
+	HWND hwnd1;
+	orderdata.Format("游戏名称：阴阳师；游戏大区：%s；游戏服务器：%s；游戏帐号：%s；游戏密码：%s；",m_strArea,m_strServer,m_strAccount,m_strPassword);
+	stry.Format("%s %s %d %d %s %s",m_strCapturePath,the_strOrderNo,0,0,orderdata,"0");
+	if(::ShellExecuteA (NULL,"open", m_strProgPath+"\\WangYi.exe",stry,m_strProgPath ,1)< (HINSTANCE) 31)
+		return 2260;
+	strAllLog="等待账号验证结果...";
+	Sleep(5000);
+	for (int i=0;i<5;i++)
+	{
+		hwnd1=RC2Tool::FindForegroundWindow("WangYi");
+		if (hwnd1)
+		{
+			break;
+		}
+		else
+		{
+			if(::ShellExecuteA (NULL,"open", m_strProgPath+"\\WangYi.exe",stry,m_strProgPath ,1)< (HINSTANCE) 31)
+				return 2260;
+			Sleep(1000*10);
+		}
+	}
+	for (int i=0;i<3*60;i++)
+	{
+		if (i%20==19)
+		{
+			WriteToFile("等待账号验证结果...");
+		}
+		hwnd1=::FindWindowA(NULL,"WangYi");
+		if (hwnd1)
+		{
+			Sleep(1000);
+		}
+		else
+		{
+			char strBuilder[520];
+			::GetPrivateProfileString("账号信息", "执行状态", "", strBuilder, 520,m_strProgPath+"\\roleInfo.ini");
+			CString s;
+			s.Format("%s",strBuilder);
+			if (s=="1000")
+			{
+				WriteToFile("账号密码正确");
+				CheckA=true;
+				return 1000;
+			}
+			else if (s=="2000")
+			{
+				WriteToFile("账号密码错误");
+				CheckA=true;
+				return 3000;
+			}
+			else
+			{
+				WriteToFile("账号密码验证失败");
+				CheckA=true;
+				return 2120;
+			}
+		}
+	}
+	WriteToFile("等待账号验证结果超时");
+	return 2120;
+}

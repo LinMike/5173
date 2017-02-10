@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/Application/!svn/ver/7376/Dev/ZH_GTR/RC-ZH-YYS/WangYi/WangYi/Win32API
+END
+User32API.cs
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/Application/!svn/ver/7376/Dev/ZH_GTR/RC-ZH-YYS/WangYi/WangYi/Win32API/User32API.cs
+END
+Kernel32API.cs
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/Application/!svn/ver/7376/Dev/ZH_GTR/RC-ZH-YYS/WangYi/WangYi/Win32API/Kernel32API.cs
+END
+Gdi32API.cs
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/Application/!svn/ver/7376/Dev/ZH_GTR/RC-ZH-YYS/WangYi/WangYi/Win32API/Gdi32API.cs
+END
+Struct.cs
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/Application/!svn/ver/7376/Dev/ZH_GTR/RC-ZH-YYS/WangYi/WangYi/Win32API/Struct.cs
+END
+Shell32API.cs
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/Application/!svn/ver/7376/Dev/ZH_GTR/RC-ZH-YYS/WangYi/WangYi/Win32API/Shell32API.cs
+END
+Enums.cs
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/Application/!svn/ver/7376/Dev/ZH_GTR/RC-ZH-YYS/WangYi/WangYi/Win32API/Enums.cs
+END

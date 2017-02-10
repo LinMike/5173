@@ -1,0 +1,6 @@
+17:08:13[1.0.1.5] ===> System.IndexOutOfRangeException: 索引超出了数组界限。
+   在 WangYi.Form1..ctor(String[] strUrl)
+   在 WangYi.Program.Main(String[] arg)
+17:15:43[1.0.1.5] ===> System.IndexOutOfRangeException: 索引超出了数组界限。
+   在 WangYi.Form1..ctor(String[] strUrl)
+   在 WangYi.Program.Main(String[] arg)

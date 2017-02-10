@@ -1,0 +1,20 @@
+C:\Users\Administrator\Desktop\GDI比对\GDI\GDI\obj\x86\Debug\GDI.Properties.Resources.resources
+C:\Users\Administrator\Desktop\GDI比对\GDI\GDI\obj\x86\Debug\GDI.csproj.GenerateResource.Cache
+C:\Users\Administrator\Desktop\GDI比对\GDI\GDI\bin\Debug\GDI.exe
+C:\Users\Administrator\Desktop\GDI比对\GDI\GDI\bin\Debug\GDI.pdb
+C:\Users\Administrator\Desktop\GDI比对\GDI\GDI\obj\x86\Debug\GDI.exe
+C:\Users\Administrator\Desktop\GDI比对\GDI\GDI\obj\x86\Debug\GDI.pdb
+C:\Users\Administrator\Desktop\GDI比对\GDI\GDI\obj\x86\Debug\GDI.MainForm.resources
+C:\Users\Administrator\Desktop\GDI比对\GDI\GDI\obj\x86\Debug\GDI.CollectPic.resources
+F:\NewCode\Order\WangYiCCS.Trade\GDI\GDI\GDI\obj\x86\Debug\GDI.exe
+F:\NewCode\Order\WangYiCCS.Trade\GDI\GDI\GDI\obj\x86\Debug\GDI.pdb
+F:\NewCode\Order\WangYiCCS.Trade\GDI\GDI\GDI\bin\Debug\GDI.exe
+F:\NewCode\Order\WangYiCCS.Trade\GDI\GDI\GDI\bin\Debug\GDI.pdb
+F:\NewCode\Order\WangYiCCS.Trade\GDI\GDI\GDI\obj\x86\Debug\GDI.CollectPic.resources
+F:\NewCode\Order\WangYiCCS.Trade\GDI\GDI\GDI\obj\x86\Debug\GDI.MainForm.resources
+F:\NewCode\Order\WangYiCCS.Trade\GDI\GDI\GDI\obj\x86\Debug\GDI.Properties.Resources.resources
+F:\NewCode\Order\WangYiCCS.Trade\GDI\GDI\GDI\obj\x86\Debug\GDI.csproj.GenerateResource.Cache
+D:\personal\My Documents\需求文档\GDI\GDI\obj\x86\Debug\GDI.exe
+D:\personal\My Documents\需求文档\GDI\GDI\obj\x86\Debug\GDI.pdb
+F:\RC-ZH-YYS\WangYi\WangYi\bin\Exce\GDI比对\GDI\GDI\obj\x86\Debug\GDI.exe
+F:\RC-ZH-YYS\WangYi\WangYi\bin\Exce\GDI比对\GDI\GDI\obj\x86\Debug\GDI.pdb
