@@ -3,7 +3,7 @@
 #include "resource.h"
 #include "atlimage.h"
 //
-#define _TEST
+//#define _TEST
 
 //等待[收到接收确认]的[次数]和[每次间隔]
 #define WAIT_RECVACK_TIMES    3
@@ -527,8 +527,12 @@ BOOL CGTRYLZT::ReadOrderDetail( CString strOrderData )
 	m_strMbkImage	= myApp.FindStr( strOrderData, "<SafeCardPath>", "</SafeCardPath>" );
 	m_strMbkString	= myApp.FindStr( strOrderData, "<Passpod_Content>", "</Passpod_Content>" );
 	m_strCapturePath= myApp.FindStr( strOrderData, "<CapturePath>", "</CapturePath>" );
-	//WriteToFile( "拼图存放路径[%s]",m_strCapturePath);
-	m_strCapturePath+="\\";
+	
+	if (m_strCapturePath.ReverseFind('\\')<0)
+	{
+		m_strCapturePath+="\\";
+	}
+	WriteToFile( "拼图存放路径[%s]",m_strCapturePath);
 	/*if(!m_strMbkImage.IsEmpty())
 	WriteToFile( "密保卡路径[%s]",m_strMbkImage);*/
 	//MakeSureDirectoryPathExists(m_strCapturePath);
@@ -780,14 +784,14 @@ bool CGTRYLZT::YLZTInit()
 	if (!GameStart())
 		return false;
 
-	//#ifdef _TEST
-	//	//
-	//#else
-	//	//设置截图共享目录
-	//	WriteToFile( "游戏名[%s]",m_strGameName);
-	//	CString strParam=m_strPictureDir+" "+m_strGameName;
-	//	ShellExecute(NULL,"open", "ShareFolder.exe",strParam,m_strProgPath ,SW_SHOWNORMAL );
-	//#endif
+	#ifdef _TEST
+		//
+	#else
+		//设置截图共享目录
+		WriteToFile( "游戏名[%s]",m_strGameName);
+		CString strParam=m_strPictureDir+" "+m_strGameName;
+		ShellExecute(NULL,"open", "ShareFolder.exe",strParam,m_strProgPath ,SW_SHOWNORMAL );
+	#endif
 	return true;
 
 }
@@ -1046,3 +1050,89 @@ CString CGTRYLZT::RequestSafeCardInfo(int CodeType,CString ImagePath,CString Exp
 //	return;
 //}
 
+CString __stdcall CString_To_UTF8(CString lpSource) 
+{ 
+	int nLen = ::MultiByteToWideChar(CP_ACP,MB_ERR_INVALID_CHARS,(LPCTSTR)lpSource,-1,NULL,0); 
+	wchar_t * wszUTF_8 = new wchar_t[nLen+1]; 
+	memset(wszUTF_8, 0, nLen * 2 + 2); 
+	nLen = ::MultiByteToWideChar(CP_ACP, 0, (LPCTSTR)lpSource, -1, wszUTF_8, nLen); 
+
+	nLen = ::WideCharToMultiByte(CP_UTF8, 0, wszUTF_8, -1, NULL, 0, NULL, NULL); 
+	char *szUTF8=new char[nLen + 1]; 
+	memset(szUTF8, 0, nLen + 1); 
+	::WideCharToMultiByte (CP_UTF8, 0, wszUTF_8, -1, szUTF8, nLen, NULL,NULL); 
+	lpSource = szUTF8; 
+	delete wszUTF_8; 
+	delete szUTF8; 
+	return lpSource;
+}
+char* U2G(const char* utf8)
+{
+	int len = MultiByteToWideChar(CP_UTF8, 0, utf8, -1, NULL, 0);
+	wchar_t* wstr = new wchar_t[len+1];
+	memset(wstr, 0, sizeof(TCHAR)*(len+1));
+	MultiByteToWideChar(CP_UTF8, 0, utf8, -1, wstr, len);
+	len = WideCharToMultiByte(CP_ACP, 0, wstr, -1, NULL, 0, NULL, NULL);
+	char* str = new char[len+1];
+	memset(str, 0, len+1);
+	WideCharToMultiByte(CP_ACP, 0, wstr, -1, str, len, NULL, NULL);
+	if(wstr) delete[] wstr;
+	return str;
+}
+void BackToGamePage(HWND m_hGameWnd,CString m_strPicPath)
+{
+	//退回到游戏页面,确定关闭弹窗框
+	POINT p;
+	for (int i=0;i<10;i++)
+	{
+		myApp.SendFuncKey(VK_ESCAPE);
+		Sleep(1000);
+		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"退出游戏",&p,350,250,820,470))
+		{
+			myApp.SendFuncKey(VK_ESCAPE);
+			break;
+		}
+	}
+	Sleep(2000);
+}
+/************************************************************************/
+/* 判断当前是否有游戏弹窗出现                                           */
+/************************************************************************/
+BOOL CheckGameDialog(HWND m_hGameWnd,CString m_strPicPath)
+{
+	myApp.WriteToFile("判断是否有弹窗出现");
+	BOOL flag=FALSE;
+	POINT pt;
+	for (int i=0;i<5;i++)
+	{
+		if (myApp.FindBmp(m_hGameWnd,m_strPicPath+"接受用户协议",&pt)
+			|| myApp.FindBmp(m_hGameWnd,m_strPicPath+"取消",&pt))
+		{
+			myApp.PressMouseKey(m_hGameWnd,pt.x+10,pt.y+10);
+			myApp.WriteToFile("关闭用户协议或活动的弹窗");
+			Sleep(1000);
+			flag=TRUE;
+		}
+		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"维护中",&pt)
+			||myApp.FindBmp(m_hGameWnd,m_strPicPath+"顶号",&pt)
+			||myApp.FindBmp(m_hGameWnd,m_strPicPath+"账号登出",&pt))
+		{
+			if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"确定",&pt))
+			{
+				myApp.PressMouseKey(m_hGameWnd,pt.x+5,pt.y+5);
+				myApp.WriteToFile("关闭维护或顶号、本地账号已登出的弹窗");
+				flag=TRUE;
+				Sleep(1000);
+			}
+		}
+		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"确定",&pt))
+		{
+			myApp.PressMouseKey(m_hGameWnd,pt.x+5,pt.y+5);
+			myApp.WriteToFile("关闭包含确定按钮的弹窗");
+			flag=TRUE;
+			Sleep(1000);
+		}
+		Sleep(1000);
+	}
+	return flag;
+}

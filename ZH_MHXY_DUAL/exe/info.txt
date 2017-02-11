@@ -2,8 +2,8 @@
 <CreateTime>2013-03-29 09:35:22</CreateTime>
 <GameId>0</GameId>	<!-- GTR平台自己定义的游戏ID -->
 <GameName>梦幻西游</GameName>
-<GameArea>八区</GameArea>
-<GameServer>繁华笙歌</GameServer>莲花洞
+<GameArea>五区</GameArea>
+<GameServer>暮雨朝云</GameServer>莲花洞，层林尽染
 <RegInfos>
 	<RegInfoItem>
 		<!-- 注册资料项id  -->
@@ -13,7 +13,7 @@
 		<Name>游戏账号</Name>
 		
 		<!-- 注册资料项值  -->
-		<Value>mhxy25038</Value>2965929622,15858904985
+		<Value>chenandxi@126.com</Value>2965929622,15858904985，mhxy25038@163.com
 		
 		<!-- 验证状态  0：验证中  1：正确 2：错误-->
 		<Status>0</Status>
@@ -21,7 +21,7 @@
 	<RegInfoItem>
 		<Id>645fghf7657575567</Id>
 		<Name>游戏密码</Name>
-		<Value>slt123456..</Value>YI142219@,19870808
+		<Value>alwayshappyd</Value>YI142219@,19870808,slt123456..
 		<Status>0</Status>
 	</RegInfoItem>
 	<RegInfoItem>

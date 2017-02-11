@@ -4359,6 +4359,7 @@ void CMyClass::DragMouse(HWND hWnd,int ToX,int ToY,int FromX,int FromY,int nWait
 		int y=(kFenZi*x+bFenZi)/kFenMu;
 		SetCursorPos(rcView.left + x, rcView.top + y);
 	}
+	Sleep(1000);//อฃถู
 	mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);
 	Sleep(100);
 	return;

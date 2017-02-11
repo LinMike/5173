@@ -23,6 +23,8 @@ BYTE *pBigPic;
 POINT ptBigPic;
 POINT ptMAX;
 
+//选择服务器，是否第二次进入游戏
+BOOL SecondEnter=FALSE;
 
 
 int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
@@ -30,6 +32,8 @@ int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
 #ifdef _TEST
 	//
 #else
+
+	//return theApp.Trading();
 
 	//程序接收参数：OrderNo + 1 + UDPPort
 	if ( argc != 4 )
@@ -43,6 +47,8 @@ int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
 	theApp.the_strOrderNo = argv[1];
 	the_nRC2Port = atoi(argv[3]);
 #endif//_TEST
+	
+	system("adb kill-server");   //放程序启动最前面，不然会脚本崩溃
 
 	int nRetCode = 0;
 
@@ -64,7 +70,7 @@ int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
 			return -1;
 		}
 
-
+		
 		//初始化UDPSocket
 		if (!theUDPSocket.Create( m_UDPPORT, SOCK_DGRAM ) )//if (!theUDPSocket.InitSocket())
 		{
@@ -134,8 +140,8 @@ int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
 	theApp.IsClosePc(Status);
 	theApp.YiJiao(Status);
 
-
-
+	system("adb kill-server");
+	theApp.WriteToFile("断开UDPSocket连接");
 	theUDPSocket.Close();
 	return 1;
 }
@@ -182,11 +188,11 @@ BOOL CGTRYLZT::GameMain()
 
 	CRect rect;
 	GetWindowRect(GetDesktopWindow(),&rect);
-	/*if(rect.Width()!=1280 || rect.Height()!=1024)
+	if(rect.Width()!=1280 || rect.Height()!=1024)
 	{
 		WriteToFile("电脑分辨率不是1280*1024\r\n");
 		return 2260;
-	}*/
+	}
 	if(the_strOrderNo.Find("-")>0  || the_strOrderNo.Find("MZH")==0|| the_strOrderNo=="测试订单")
 		m_strOrderType="发布单";
 	else
@@ -196,8 +202,8 @@ BOOL CGTRYLZT::GameMain()
 	myApp.DeleteLog(m_strPictureDir,3);
 	/*if(!CheckAccount())
 	{
-		WriteToFile("账号不是纯数字");
-		return 3000;
+	WriteToFile("账号不是纯数字");
+	return 3000;
 	}*/
 
 
@@ -206,18 +212,32 @@ BOOL CGTRYLZT::GameMain()
 	/*m_hGameWnd=myApp.GetHwndByPid(NULL,"海马玩");
 	if(m_hGameWnd)
 	{
-		myApp.ActiveWindow(m_hGameWnd);
-		for (int i=0;i<3;i++)
-		{
-			myApp.DragMouse(m_hGameWnd,960,200,960,550);
-		}
-		return 1;
+	myApp.ActiveWindow(m_hGameWnd);
+	for (int i=0;i<3;i++)
+	{
+	myApp.DragMouse(m_hGameWnd,960,200,960,550);
+	}
+	return 1;
 	}*/
-
+	
+	
 #else
 	//
 #endif
+	
 
+
+	for (int i=0;i<3;i++)
+	{
+		Status=CheckAccount();
+		if (Status>=3000)
+			return Status;
+		else if (Status==2120)
+			continue;
+		else break;
+	}
+	
+	//Sleep(1000*50);
 	/*for(int i=0;i<3;i++)
 	{
 		Status = WebPage();
@@ -229,23 +249,25 @@ BOOL CGTRYLZT::GameMain()
 			break;
 	}
 	myApp.KillWindow("浏览器.exe");*/
-
-
+	
+	
 
 	for(int i=0;i<3;i++)
 	{
-		/*KillProcess();
+		KillProcess();
 
 		Status=WaitStartGame();
 		if (Status==2120)
-			continue;
+		continue;
 		if (Status > 1000)
-			return Status;
+		return Status;
+		//m_hGameWnd=myApp.GetHwndByPid("Droid4X.exe");
+		Sleep(2000);
 		Status=EnterAccPwd();
 		if (Status==2120)
-			continue;
+		continue;
 		if (Status > 1000)
-			return Status;*/
+		return Status;
 
 
 		Status=Trade();
@@ -260,104 +282,104 @@ BOOL CGTRYLZT::GameMain()
 
 
 }
-int CGTRYLZT::SelectServer()
-{
-	int index=m_strArea.Find("区");
-	if( m_strArea.Find("区")<0)
-	{
-		WriteToFile ("区服错误");
-		return 2260;
-	}
-	CString strServer=m_strArea.Left(index);
-	CString strText="手Q,";
-	CString strText1="手Q_1,";
-	for(int i=0;i<strServer.GetLength();i++)
-	{
-		strText+=strServer.Mid(i,1)+",";
-		strText1+=strServer.Mid(i,1)+"_1,";
-	}
-	strText+="区";
-	strText1+="区_1";
-	PinTu(strText,"区服",m_strPicPath+"区服");
-	PinTu(strText1,"区服1",m_strPicPath+"区服");
-	POINT  pt;
-	myApp.PressMouseKey (m_hGameWnd,710,465);
-	for(int i=0;i<10;i++)
-	{
-		Sleep(1000);
-		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"区服页面",&pt)
-			|| myApp.FindBmp(m_hGameWnd,m_strPicPath+"区服页面2",&pt))
-			break;
-	}
-	if(pt.x<0)
-	{
-		WriteToFile ("等待区服页面超时");
-		return 2260;
-	}
-	CaptureJpg("区服页面");
-	for(int i=0;i<10;i++)
-	{
-		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"我的服务器",&pt)
-			|| myApp.FindBmp(m_hGameWnd,m_strPicPath+"我的服务器2",&pt)
-			|| myApp.FindBmp(m_hGameWnd,m_strPicPath+"我的服务器3",&pt))
-			break;
-		DragMouse(m_hGameWnd,60,200,60,800);
-	}
-	if(pt.x<0)
-	{
-		WriteToFile ("找不到[我的服务器]");
-		return 2260;
-	}
-	myApp.PressMouseKey (m_hGameWnd,pt.x+50,pt.y+10);
-	Sleep(1000);
-	if(!myApp.FindBmp(m_hGameWnd,m_strPicPath+"区服\\区服",&pt)
-		&& !myApp.FindBmp(m_hGameWnd,m_strPicPath+"区服\\区服1",&pt))
-	{
-		WriteToFile ("找不到服务器");
-		return 2260;
-	}
-	myApp.PressMouseKey (m_hGameWnd,pt.x+100,pt.y+10);
-	Sleep(1000);
-	if(!myApp.FindBmp(m_hGameWnd,m_strPicPath+"开始",&pt)
-		&& !myApp.FindBmp(m_hGameWnd,m_strPicPath+"开始2",&pt))
-	{
-		WriteToFile ("找不到[开始]");
-		return 2260;
-	}
-	CaptureJpg("区服");
-	myApp.PressMouseKey (m_hGameWnd,pt.x+10,pt.y+10);
-	Sleep(5000);
-	for(int i=0;i<20;i++)
-	{
-		Sleep(3000);
-		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"英雄",&pt))
-			break;
-		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"英雄2",&pt))
-			break;
-		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"叉叉",&pt)
-			|| myApp.FindBmp(m_hGameWnd,m_strPicPath+"叉叉2",&pt)
-			|| myApp.FindBmp(m_hGameWnd,m_strPicPath+"叉叉3",&pt)
-			|| myApp.FindBmp(m_hGameWnd,m_strPicPath+"叉叉4",&pt))
-		{
-			myApp.PressMouseKey (m_hGameWnd,pt.x+20,pt.y+20);
-			//myApp.PressMouseKey (m_hGameWnd,pt.x+20,pt.y+20);
-			Sleep(500);
-			myApp.PressMouseKey (m_hGameWnd,20,20);
-		}
-		else
-			myApp.PressMouseKey (m_hGameWnd,880,115);
-		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"赛事系统",&pt))
-			myApp.PressMouseKey (m_hGameWnd,50,70);
-
-	}
-	if(!myApp.FindBmp(m_hGameWnd,m_strPicPath+"英雄",&pt)
-		&& !myApp.FindBmp(m_hGameWnd,m_strPicPath+"英雄2",&pt))
-	{
-		WriteToFile ("找不到[英雄]");
-		return 2260;
-	}
-	return 1;
-}
+//int CGTRYLZT::SelectServer()
+//{
+//	int index=m_strArea.Find("区");
+//	if( m_strArea.Find("区")<0)
+//	{
+//		WriteToFile ("区服错误");
+//		return 2260;
+//	}
+//	CString strServer=m_strArea.Left(index);
+//	CString strText="手Q,";
+//	CString strText1="手Q_1,";
+//	for(int i=0;i<strServer.GetLength();i++)
+//	{
+//		strText+=strServer.Mid(i,1)+",";
+//		strText1+=strServer.Mid(i,1)+"_1,";
+//	}
+//	strText+="区";
+//	strText1+="区_1";
+//	PinTu(strText,"区服",m_strPicPath+"区服");
+//	PinTu(strText1,"区服1",m_strPicPath+"区服");
+//	POINT  pt;
+//	myApp.PressMouseKey (m_hGameWnd,710,465);
+//	for(int i=0;i<10;i++)
+//	{
+//		Sleep(1000);
+//		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"区服页面",&pt)
+//			|| myApp.FindBmp(m_hGameWnd,m_strPicPath+"区服页面2",&pt))
+//			break;
+//	}
+//	if(pt.x<0)
+//	{
+//		WriteToFile ("等待区服页面超时");
+//		return 2260;
+//	}
+//	CaptureJpg("区服页面");
+//	for(int i=0;i<10;i++)
+//	{
+//		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"我的服务器",&pt)
+//			|| myApp.FindBmp(m_hGameWnd,m_strPicPath+"我的服务器2",&pt)
+//			|| myApp.FindBmp(m_hGameWnd,m_strPicPath+"我的服务器3",&pt))
+//			break;
+//		DragMouse(m_hGameWnd,60,200,60,800);
+//	}
+//	if(pt.x<0)
+//	{
+//		WriteToFile ("找不到[我的服务器]");
+//		return 2260;
+//	}
+//	myApp.PressMouseKey (m_hGameWnd,pt.x+50,pt.y+10);
+//	Sleep(1000);
+//	if(!myApp.FindBmp(m_hGameWnd,m_strPicPath+"区服\\区服",&pt)
+//		&& !myApp.FindBmp(m_hGameWnd,m_strPicPath+"区服\\区服1",&pt))
+//	{
+//		WriteToFile ("找不到服务器");
+//		return 2260;
+//	}
+//	myApp.PressMouseKey (m_hGameWnd,pt.x+100,pt.y+10);
+//	Sleep(1000);
+//	if(!myApp.FindBmp(m_hGameWnd,m_strPicPath+"开始",&pt)
+//		&& !myApp.FindBmp(m_hGameWnd,m_strPicPath+"开始2",&pt))
+//	{
+//		WriteToFile ("找不到[开始]");
+//		return 2260;
+//	}
+//	CaptureJpg("区服");
+//	myApp.PressMouseKey (m_hGameWnd,pt.x+10,pt.y+10);
+//	Sleep(5000);
+//	for(int i=0;i<20;i++)
+//	{
+//		Sleep(3000);
+//		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"英雄",&pt))
+//			break;
+//		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"英雄2",&pt))
+//			break;
+//		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"叉叉",&pt)
+//			|| myApp.FindBmp(m_hGameWnd,m_strPicPath+"叉叉2",&pt)
+//			|| myApp.FindBmp(m_hGameWnd,m_strPicPath+"叉叉3",&pt)
+//			|| myApp.FindBmp(m_hGameWnd,m_strPicPath+"叉叉4",&pt))
+//		{
+//			myApp.PressMouseKey (m_hGameWnd,pt.x+20,pt.y+20);
+//			//myApp.PressMouseKey (m_hGameWnd,pt.x+20,pt.y+20);
+//			Sleep(500);
+//			myApp.PressMouseKey (m_hGameWnd,20,20);
+//		}
+//		else
+//			myApp.PressMouseKey (m_hGameWnd,880,115);
+//		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"赛事系统",&pt))
+//			myApp.PressMouseKey (m_hGameWnd,50,70);
+//
+//	}
+//	if(!myApp.FindBmp(m_hGameWnd,m_strPicPath+"英雄",&pt)
+//		&& !myApp.FindBmp(m_hGameWnd,m_strPicPath+"英雄2",&pt))
+//	{
+//		WriteToFile ("找不到[英雄]");
+//		return 2260;
+//	}
+//	return 1;
+//}
 void CGTRYLZT::DragMouse(HWND hwnd,int fromX,int fromY,int toX,int toY)
 {
 	myApp.MoveMouse(hwnd,fromX,fromY);
@@ -374,7 +396,7 @@ int CGTRYLZT::WebPage()
 
 	POINT  pt,ptTemp;
 	myApp.KillWindow("浏览器.exe");
-	WinExec(m_strProgPath+"\\浏览器.exe https://my.xoyo.com",SW_SHOW);
+	WinExec(m_strProgPath+"\\浏览器.exe http://reg.163.com/", SW_SHOW);
 	for(int i=0;i<10;i++)
 	{
 		Sleep(2000);
@@ -385,8 +407,16 @@ int CGTRYLZT::WebPage()
 	if(!IsWindow(m_hGameWnd))
 	{
 		WriteToFile ("打开浏览器失败");
-		return 2260;
+		return 2120;
 	}
+//#ifdef _DEBUG
+	/*m_hGameWnd=myApp.GetHwndByPid("浏览器.exe");
+	myApp.ActiveWindow(m_hGameWnd);
+	int fl=0;
+	cin>>fl;
+	myApp.ActiveWindow(m_hGameWnd);*/
+
+//#endif
 	SetWindowPos(m_hGameWnd,NULL,0,0,0,0,SWP_NOSIZE);
 
 
@@ -401,85 +431,140 @@ PWD_ERROR:
 
 	for(int i=0;i<10;i++)
 	{
-		Sleep(3000);
-		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"网页登录",&pt)
-			|| myApp.FindBmp(m_hGameWnd,m_strPicPath+"网页登录2",&pt,0,0,0,0,TRUE,24,FALSE))
-			break;
+		Sleep(5000);
+		if(/*myApp.FindBmp(m_hGameWnd,m_strPicPath+"网页登录",&pt)
+		   || */myApp.FindBmp(m_hGameWnd,m_strPicPath+"普通登录",&pt,0,0,0,0,TRUE,24,FALSE))
+		   break;
 		myApp.SendFuncKey(VK_F5);
 	}
 	if(pt.x<0)
 	{
-		WriteToFile ("找不到网页登录");
-		CaptureJpg("找不到网页登录");
+		WriteToFile ("找不到普通登录");
+		CaptureJpg("找不到普通登录");
 		return 2120;
 	}
 
-	for(int i=0;i<10;i++)
-	{	
-		cout<<"00"<<endl;
-		if(!myApp.FindBmp(m_hGameWnd,m_strPicPath+"验证码空",&ptTemp,800,310,940,370,TRUE,24,FALSE))
-			break;
-		cout<<"11"<<endl;
-		myApp.SendFuncKey(VK_F5);
-		Sleep(5000);
-	}
-	if(ptTemp.x>0)
-	{
-		WriteToFile ("验证码刷新失败");
-		return 2260;
-	}
-
-	myApp.PressMouseKey (m_hGameWnd,pt.x+100,pt.y-188);
+	myApp.PressMouseKey (m_hGameWnd,pt.x+120,pt.y+90);//账号textbox
 	Sleep (300);
+	myApp.SendFuncKey(VK_HOME);
+	Sleep(300);
+	myApp.SendFuncKey(VK_DELETE,30);
+	Sleep(300);
 	myApp.SendKeys(m_strAccount,200);
 
-
 	Sleep (300);
-	myApp.PressMouseKey (m_hGameWnd,pt.x+100,pt.y-145);
-
+	myApp.PressMouseKey (m_hGameWnd,pt.x+120,pt.y+160);//密码textbox
+	Sleep(300);
+	myApp.SendFuncKey(VK_HOME);
+	Sleep(300);
+	myApp.SendFuncKey(VK_DELETE,20);
 	Sleep (300);
 	myApp.SendKeys(m_strPassword,200);
 
-	myApp.CapturePictureInRect(m_hGameWnd,"E:\\1.bmp",pt.x+38,pt.y-120,pt.x+175,pt.y-60);
-	myApp.BMPToJPG("E:\\1.bmp");
-
-	CString strResult=RequestSafeCardInfo(1,"E:\\1.jpg","",90);
-	if (strResult.GetLength() < 4)
+SafeCode:
+	for (int i=0;i<5;i++)
 	{
-		WriteToFile ("答题员放弃验证码答题");
-		return 2230;
+		Sleep(1000);
+		//TODO:点击验证码滑块，拖动滑块
+		if (myApp.FindBmp(m_hGameWnd,m_strPicPath+"滑动验证",&pt))
+		{
+			myApp.MoveMouse(m_hGameWnd,pt.x+10,pt.y+5);
+			myApp.CapturePictureInRect(m_hGameWnd,"E:\\1.bmp",pt.x-20,pt.y-130,pt.x+310,pt.y-30);
+			myApp.BMPToJPG("E:\\1.bmp");
+			//验证码类型(不能为空)
+			//1. 文字验证码.
+			//2. 密保验证码.
+			//3. 坐标验证码.
+			CString strResult=RequestSafeCardInfo(3,"E:\\1.jpg","",90);
+			if (strResult.GetLength() < 1)
+			{
+				WriteToFile ("答题员放弃验证码答题");
+				return 2120;
+			}
+
+			int tx=atoi(strResult);
+			WriteToFile("%s%d","验证码距离是：",tx);
+			Sleep(1000);
+			myApp.DragMouse(m_hGameWnd,pt.x+10+tx+2-40,pt.y+5,pt.x+10,pt.y+5,1000);//图片偏移量
+			break;
+		}
+		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"字符验证",&pt))
+		{
+			myApp.CapturePictureInRect(m_hGameWnd,"E:\\1.bmp",890,330,1010,380);
+			myApp.BMPToJPG("E:\\1.bmp");
+			CString strResult=RequestSafeCardInfo(1,"E:\\1.jpg","",90);
+			if(strResult.GetLength()<4)
+			{
+				WriteToFile("答题员放弃验证码答题");
+				return 2120;
+			}
+			WriteToFile("%s%s","验证码是：",strResult);
+			Sleep(1000);
+			myApp.PressMouseKey(m_hGameWnd,pt.x+10,pt.y+10);
+			Sleep(1000);
+			myApp.SendString(strResult);
+			break;
+		}
 	}
-
-	myApp.PressMouseKey(m_hGameWnd,pt.x+10,pt.y-90);
-	Sleep(1000);
-
-	myApp.SendKeys(strResult,200);
-
+	if(pt.x<0)
+	{
+		WriteToFile("没有找到滑动验证按钮或字符验证，刷新页面");
+		yzmTimes++;
+		if(yzmTimes>3)
+		{
+			WriteToFile ("验证码未显示超过3次");
+			return 2120;
+		}
+		myApp.SendFuncKey(VK_F5);
+		goto PWD_ERROR;
+	}
+	
 
 	WriteToFile ("输入完成 账号[%s]密码[%d]位",m_strAccount,m_strPassword.GetLength());
-	Sleep (500);
+	Sleep (2000);
 	CaptureJpg("账号密码");
 
-	myApp.PressMouseKey (m_hGameWnd,pt.x+10,pt.y+10);
+	/*if(!(myApp.FindBmp(m_hGameWnd,m_strPicPath+"网页登录2",&pt)
+	|| myApp.FindBmp(m_hGameWnd,m_strPicPath+"网页登录",&pt)))
+	{
+	WriteToFile("找不到网页登录按钮");
+	return 2120;
+	}*/
+	pt.x=pt.y=-1;
+	for (int i=0;i<5;i++)
+	{
+		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"网页登录2",&pt,650,370,1000,510))
+		{
+			break;
+		}
+		Sleep(1000);
+	}
+	if(pt.x<0) 
+	{
+		WriteToFile("找不到网页登录按钮");
+		//return 2120;
+	}
+	else myApp.PressMouseKey (m_hGameWnd,pt.x+10,pt.y+10);
 	Sleep (2000);
-	CaptureJpg("账号密码输完");
+	//CaptureJpg("账号密码输完");
 	static int inputTimes=0;
 	for(int i=0;i<3;i++)
 	{
-		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"安全中心",&pt)
-			|| myApp.FindBmp(m_hGameWnd,m_strPicPath+"安全中心2",&pt))
+		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"账号管理",&pt,0,0,0,0,TRUE,24,FALSE)
+			|| myApp.FindBmp(m_hGameWnd,m_strPicPath+"登录",&pt,0,0,0,0,TRUE,24,FALSE))
 			break;
 
-		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"网页密码错",&pt))
+		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"账号密码错",&pt))
 		{
 			WriteToFile ("账号密码错");
-			CaptureJpg("账号密码错");
+			//CaptureJpg("账号密码错");
 			if(errorTimes>0)
 				return 3000;
 			errorTimes++;
 			goto PWD_ERROR;
 		}
-		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"验证码错",&pt))
+		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"验证码错",&pt)
+			|| myApp.FindBmp(m_hGameWnd,m_strPicPath+"验证码错2",&pt))
 		{
 			WriteToFile ("验证码不正确");
 			CaptureJpg("验证码错");
@@ -487,30 +572,82 @@ PWD_ERROR:
 			if(yzmTimes>3)
 			{
 				WriteToFile ("验证码错超过3次");
+				return 4330;
 			}
-			return 2120;
+			goto SafeCode;
 		}
-		myApp.SendFuncKey(VK_F5);
+		//myApp.SendFuncKey(VK_F5);
 		Sleep (5000);
 	}
-	if(!myApp.FindBmp(m_hGameWnd,m_strPicPath+"安全中心",&pt)
-		&& !myApp.FindBmp(m_hGameWnd,m_strPicPath+"安全中心2",&pt))
+
+
+	Sleep(2000);
+	for (int i=0;i<3;i++)
+	{
+		if (myApp.FindBmp(m_hGameWnd,m_strPicPath+"登录",&pt,0,0,0,0,TRUE,24,FALSE))
+		{
+			myApp.PressMouseKey(m_hGameWnd,pt.x,pt.y);//手机pt.x-120,pt.y+10
+
+			myApp.ActiveWindow(m_hGameWnd);
+			Sleep(2000);
+			break;
+		}
+		Sleep(2000);
+	}
+	
+
+	for (int i=0;i<5;i++)
+	{
+		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"以后",&pt))
+		{
+			myApp.PressMouseKey(m_hGameWnd,pt.x+5,pt.y+5);
+			Sleep(2000);
+			break;
+		}
+		Sleep(2000);
+	}
+
+	for (int i=0;i<5;i++)
+	{
+		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"账号管理",&pt,0,0,0,0,TRUE,24,FALSE)
+			/*&& !myApp.FindBmp(m_hGameWnd,m_strPicPath+"安全中心2",&pt)*/)
+		{
+			WriteToFile("登录成功");
+			break;
+		}
+		else WriteToFile("找不到账号管理");
+		Sleep(2000);
+	}
+	if(pt.x<0)
 	{
 		CaptureJpg("登录失败");
 		WriteToFile("登录失败");
-		return 2260;
-	}
-	myApp.PressMouseKey (m_hGameWnd,pt.x+10,pt.y+10);
-	Sleep (2000);
-	if(!myApp.FindBmp(m_hGameWnd,m_strPicPath+"账号安全",&pt)
-		&& !myApp.FindBmp(m_hGameWnd,m_strPicPath+"账号安全2",&pt))
-	{
-		CaptureJpg("账号安全");
-		WriteToFile("找不到账号安全");
-		return 2260;
+		return 3700;
 	}
 
-	CaptureJpgInRect("账号安全", pt.x-45,pt.y-15,pt.x+650,pt.y+375);
+	myApp.PressMouseKey (m_hGameWnd,pt.x+10,pt.y+10);
+	Sleep (2000);
+	for (int i=0;i<5;i++)
+	{
+		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"账号安全",&pt,0,0,0,0,TRUE,24,FALSE)
+			/*&& !myApp.FindBmp(m_hGameWnd,m_strPicPath+"账号安全2",&pt)*/)
+		{
+			WriteToFile("找到账号安全");
+			break;
+		}
+		else WriteToFile("找不到账号安全");
+		Sleep(2000);
+	}
+	if(pt.x<0)
+	{
+		CaptureJpg("账号安全");
+		WriteToFile("查找账号安全失败");
+		return 2120;
+	}
+
+	myApp.PressMouseKey(m_hGameWnd,pt.x+5,pt.y+15);
+	Sleep(5000);
+	CaptureJpgInRect("账号安全", pt.x-10,pt.y-170,pt.x+890,pt.y+290);
 
 	myApp.KillWindow("浏览器.exe");
 	return 1;
@@ -519,6 +656,7 @@ PWD_ERROR:
 //判断是否被顶号 
 BOOL CGTRYLZT::NetBreak()
 {
+	WriteToFile("订单失败");
 	CaptureJpg("订单失败",GetDesktopWindow());
 	POINT pt;
 
@@ -758,57 +896,43 @@ int CGTRYLZT::WaitStartGame()
 	}
 
 	WriteToFile("开游戏");
-	//TODO:搜索后台进程查找模拟器
-	/*m_hGameWnd=FindWindow(NULL,"海马玩模拟器 0.10.5 Beta");//myApp.GetHwndByPid("海马玩模拟器 0.10.5 Beta");// 
+	m_hGameWnd=myApp.GetHwndByPid("Droid4X.exe");
 	if(IsWindow(m_hGameWnd))
 	{
-		WriteToFile("获取模拟器窗口");
-		ShowWindow(m_hGameWnd,-1);
-		
-		WriteToFile("显示模拟器窗口");
+		myApp.ActiveWindow(m_hGameWnd);
+		WriteToFile("模拟器已经运行");
 	}
 	else
-	{*/
+	{
+		WriteToFile("打开模拟器");
 		//TODO:打开游戏进程
-		//HINSTANCE n =::ShellExecute(NULL,"open", m_strGameStartFile,"",m_strGamePath ,SW_SHOWNORMAL );
-		//if( n < (HINSTANCE) 31)
-		//{
-		//	WriteToFile("打开游戏失败\r\n");
-		//	return 2120;//开启异常
-		//}
+		HINSTANCE n =::ShellExecute(NULL,"open", m_strGameStartFile,"",m_strGamePath ,SW_SHOWNORMAL );
+		if( n < (HINSTANCE) 31)
+		{
+			WriteToFile("打开游戏失败\r\n");
+			return 2120;//开启异常
+		}
+	}
 
-		//for(int i=0;i<30;i++)
-		//{
-		//	//m_hGameWnd=FindWindow(NULL,"海马玩模拟器 0.10.5 Beta");
-		//	m_hGameWnd=myApp.GetHwndByPid("VBoxHeadless.exe");
-		//	if(IsWindowVisible(m_hGameWnd))
-		//		break;
-		//	Sleep(3000);
-		//}
-	//}
 	for(int i=0;i<30;i++)
 	{
 		m_hGameWnd=myApp.GetHwndByPid("Droid4X.exe");
 		if(IsWindowVisible(m_hGameWnd))
 			break;
-		else ShowWindow(m_hGameWnd,SW_SHOW);
+		else myApp.ActiveWindow(m_hGameWnd);
 		Sleep(3000);
 	}
-	
+
 	if(!IsWindowVisible(m_hGameWnd))
 	{
 		WriteToFile("等待模拟器窗口超时");
 		return 2260;
 	}
+
+	
 	Sleep(1000);
 	for(int i=0;i<50;i++)
 	{
-		//myApp.PressMouseKey(m_hGameWnd,740,120);//点击home
-		//WriteToFile("点击home");
-		//Sleep(1000);
-		//myApp.PressMouseKey(m_hGameWnd,690,90);//点击我的桌面
-		//WriteToFile("点击我的桌面");
-
 		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"游戏",&pt)
 			|| myApp.FindBmp(m_hGameWnd,m_strPicPath+"游戏2",&pt))
 			break;
@@ -819,8 +943,23 @@ int CGTRYLZT::WaitStartGame()
 		WriteToFile("找不到图片[游戏]");
 		return 2260;
 	}
+
+	//TODO:登录游戏之前清除配置文件
+	//删除指定文件
+	WriteToFile("开启游戏之前清除区服配置文件");
+	system("adb kill-server");
+	system("adb connect 127.0.0.1:26944");
+	system("adb shell \"su -c \' rm /data/data/com.netease.my/shared_prefs/Cocos2dxPrefsFile.xml\'\""); 
+	
+	Sleep(2000);
+	system("adb kill-server");
+
 	myApp.PressMouseKey(m_hGameWnd,pt.x+30,pt.y-50,1,50);
 	WriteToFile("等待游戏窗口");
+
+	SetWindowPos(m_hGameWnd,NULL,0,0,0,0,SWP_NOSIZE);
+	Sleep(1000);
+
 	for(int i=0;i<10;i++)
 	{
 		m_hGameWnd=myApp.GetHwndByPid("Droid4X.exe");
@@ -833,40 +972,88 @@ int CGTRYLZT::WaitStartGame()
 		WriteToFile("等待游戏窗口超时");
 		return 2260;
 	}
-CheckInOther:
+
 	pt.x=pt.y=-1;//初始化
-	for(int i=0;i<10;i++)
+	for(int i=0;i<60;i++)
 	{
-		Sleep(1000);
+		Sleep(5000);
 		if(i%20==0)
 			WriteToFile("等待登录页面");
-		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"其他账号",&pt))
+		//用户协议弹窗
+		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"接受用户协议",&pt))
+		{
+			myApp.PressMouseKey(m_hGameWnd,pt.x,pt.y);
+			Sleep(2000);
+		}
+		if (myApp.FindBmp(m_hGameWnd,m_strPicPath+"取消",&pt))
+		{
+			myApp.PressMouseKey(m_hGameWnd,pt.x,pt.y);
+			Sleep(2000);
+		}
+		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"确定",&pt))
+		{
+			myApp.PressMouseKey(m_hGameWnd,pt.x,pt.y);
+			Sleep(2000);
+		}
+		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"其他账号",&pt)
+			|| myApp.FindBmp(m_hGameWnd,m_strPicPath+"其他账号2",&pt))
+		{
+			goto CheckInOther;
+		}
+		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"用户中心",&pt))
 			break;
-		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"切换账号",&ptTemp))
-			myApp.PressMouseKey(m_hGameWnd,ptTemp.x+20,ptTemp.y+20);
 	}
 	if(pt.x<0)
 	{
-		WriteToFile("找不到图片[其他账号登录]");
-		for(int i=0;i<10;i++)
+		WriteToFile("找不到图片[用户中心]或[其他账号登录]");
+		return 2260;
+	}
+	else 
+	{
+		Sleep(3000);
+		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"用户中心",&pt))
 		{
-			if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"用户中心",&pt))
+			WriteToFile("找到用户中心");
+			myApp.PressMouseKey(m_hGameWnd,pt.x+10,pt.y+10);
+		}
+		
+		//Sleep(2000);
+		for (int i=0;i<10;i++)
+		{
+			if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"切换账号",&ptTemp)
+				|| myApp.FindBmp(m_hGameWnd,m_strPicPath+"切换账号2",&ptTemp))
+			{
+				myApp.PressMouseKey(m_hGameWnd,ptTemp.x+20,ptTemp.y+20);
+				WriteToFile("切换账号");
 				break;
+			}
+			Sleep(1000);
+		}
+		if(ptTemp.x<0)
+		{
+			WriteToFile("找不到切换账号");
+			return 1;
+		}
+		for (int i=0;i<10;i++)
+		{
+			if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"其他账号",&pt)
+				|| myApp.FindBmp(m_hGameWnd,m_strPicPath+"其他账号2",&pt))
+			{
+CheckInOther:	myApp.PressMouseKey(m_hGameWnd,pt.x+10,pt.y+10);//点击使用其他账号登录
+				WriteToFile("其他账号登录");
+				break;
+			}
 			Sleep(1000);
 		}
 		if(pt.x<0)
-			return 2260;
-		else {
-			WriteToFile("找到用户中心");
-			myApp.PressMouseKey(m_hGameWnd,pt.x+20,pt.y+20);
-			goto CheckInOther;
+		{
+			WriteToFile("找不到其他账号");
+			return 1;
 		}
 	}
-	Sleep(2000);
-	myApp.PressMouseKey(m_hGameWnd,pt.x+10,pt.y+10);//点击使用其他账号登录
-	Sleep(1000);
-	SetWindowPos(m_hGameWnd,NULL,0,0,0,0,SWP_NOSIZE);
-	Sleep(1000);
+	
+	/*SetWindowPos(m_hGameWnd,NULL,0,0,0,0,SWP_NOSIZE);
+	Sleep(1000);*/
 	return 1;
 
 
@@ -878,42 +1065,36 @@ BOOL CGTRYLZT::EnterAccPwd()
 
 	//SendGoodsState("输入帐号密码",60);
 	//CString strOS=CMyClass::GetOSVersion();
+
+
 	POINT pt;
-	//CaptureJpg("账号页面");
+	
 	int nCheckTimes=0;
-	//WriteToFile("等待安全检查\r\n");
-PASSWORD_ERROR:
-	if(!myApp.FindBmp(m_hGameWnd,m_strPicPath+"网易账号",&pt))
+
+	for (int i=0;i<10;i++)
 	{
-		WriteToFile("不是账号页面");
-		return 2260;
+		if(!(myApp.FindBmp(m_hGameWnd,m_strPicPath+"网易账号",&pt)
+			|| myApp.FindBmp(m_hGameWnd,m_strPicPath+"网易账号2",&pt) ))
+		{
+			WriteToFile("不是账号页面");
+			return 2260;
+		}
+		else break;
+		Sleep(1000);
 	}
+	Sleep(1000);
+	
 	//检查输入法,大写锁
 	if (!CheckIM())
 		return 2120;
-	//myApp.MoveMouse(m_hGameWnd,50,50);
-	static int runTimes=0;
-	if(runTimes>8)
-	{
-		WriteToFile("输账号超过8次\r\n");
-		return 2260;
-	}
-	runTimes++;
-
-	/*for(int i=0;i<5;i++)
-	{
-	myApp.PressMouseKey (m_hGameWnd,670,465,2);
-	Sleep(1000);
-	myApp.SendKeys(VK_BACK,5);
-	Sleep(1000);
-	}*/
+	
 	myApp.PressMouseKey (m_hGameWnd,pt.x,pt.y);//点击网易邮箱账号登录
 	Sleep (1000);
 	pt.x=pt.y=-1;
-	for (int i=0;i<3;i++)
+	for (int i=0;i<5;i++)
 	{
-		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"邮箱登录",&pt,0,0,0,0,TRUE,60)
-			|| myApp.FindBmp(m_hGameWnd,m_strPicPath+"邮箱登录2",&pt,0,0,0,0,TRUE,60))
+		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"邮箱登录",&pt,415,370,920,440)
+			/*|| myApp.FindBmp(m_hGameWnd,m_strPicPath+"邮箱登录2",&pt,415,370,920,440)*/)
 			break;
 		Sleep(1000);
 	}
@@ -922,13 +1103,10 @@ PASSWORD_ERROR:
 		WriteToFile("找不到邮箱登录按钮");
 		return 2260;
 	}
-	//RC2Tool::DoubleClick (m_hGameWnd,pt_Id.x,pt_Id.y);
-	//Sleep(1000);
-	//myApp.Send2Keys(VK_CONTROL,'A');
-	//Sleep(1000);
-	myApp.PressMouseKey(m_hGameWnd,pt.x,pt.y-150);
+
+	myApp.PressMouseKey(m_hGameWnd,pt.x+180,pt.y-150);
 	myApp.SendFuncKey(VK_BACK,20);
-		
+
 	WriteToFile("开始输入账号密码\r\n");
 
 
@@ -936,18 +1114,19 @@ PASSWORD_ERROR:
 	myApp.SendKeys(m_strAccount,200);
 	myApp.PressMouseKey(m_hGameWnd,pt.x,pt.y-70);//点击账号框收起账号提示文本
 	Sleep(1000);
-	myApp.PressMouseKey (m_hGameWnd,pt.x+10,pt.y-70);//聚焦密码框
-	//Sleep (1000);
-	/*if(!myApp.FindBmp(m_hGameWnd,m_strPicPath+"登录",&pt,0,0,0,0,TRUE,60))
+	myApp.PressMouseKey (m_hGameWnd,pt.x+180,pt.y-70);//聚焦密码框
+
+PASSWORD_ERROR:
+	static int runTimes=0;
+	if(runTimes>8)
 	{
-		WriteToFile("不是账号页面");
-		return 2260;
-	}*/
+		WriteToFile("输账号超过8次\r\n");
+		return 3700;
+	}
+	runTimes++;
 
-
-	//myApp.PressMouseKey (m_hGameWnd,pt.x+60,pt.y-70);
-	//CWinAPIKey::VKSendTabKey();//发送TAB换行
 	Sleep (300);
+	//myApp.SendFuncKey(VK_HOME);
 	myApp.SendFuncKey(VK_BACK,20);//如果记住了密码，则清除
 	myApp.SendKeys(m_strPassword,200);
 	//RC2Tool::DoubleClick (m_hGameWnd,pt_Pwd.x,pt_Pwd.y);
@@ -957,16 +1136,14 @@ PASSWORD_ERROR:
 
 	WriteToFile ("输入完成 账号[%s]密码[%d]位",m_strAccount,m_strPassword.GetLength());
 	Sleep (1000);
-	//CaptureJpg("账号密码");
 	if(!myApp.FindBmp(m_hGameWnd,m_strPicPath+"邮箱登录2",&pt,0,0,0,0,TRUE,60))
 	{
 		WriteToFile("不是账号页面");
 		return 2260;
 	}
 
-	myApp.PressMouseKey (m_hGameWnd,pt.x+5,pt.y+5);
-	Sleep(2000);
-	//CaptureJpg("登录");
+	myApp.PressMouseKey (m_hGameWnd,pt.x+5,pt.y+5);//点击登录
+	
 	for(int i=0;i<5;i++)
 	{
 		Sleep(2000);
@@ -977,109 +1154,164 @@ PASSWORD_ERROR:
 	if(pt.x>0)
 	{
 		WriteToFile ("登录页面没有消失");
-		return 2260;
+		goto PASSWORD_ERROR;
+		//return 2260;
 	}
+	
+	
+	/************************************************************************/
+	/* 登录游戏部分  
+		先删除游戏的区服配置文件，然后默认登录一个服务器，
+		配置文件被游戏软件修改，此时拷贝出配置文件从中找到要登录的
+		区服，然后修改lastLogin信息，使下一次登录时的默认区服是
+		要登录的区服。
+	*/
+	/************************************************************************/
 
-
-
-
-
-
-	for(int i=0;i<30;i++)
+	SecondEnter=FALSE;
+	//进行第一次登录，登录完成后退出
+	
+UserLogin:
+	
+	if(SecondEnter==TRUE)
 	{
-		if(i%10==0)
-			WriteToFile ("等待进入游戏");
-		//Sleep(2000);
-		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"点击选服",&pt))
-			break;
-		Sleep(1000);
-				
-
-		/*if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"公告叉叉",&pt)
-			|| myApp.FindBmp(m_hGameWnd,m_strPicPath+"公告叉叉2",&pt))
+		//TODO:重新点击游戏图标打开游戏
+		WriteToFile("修改区服配置文件，重新打开游戏");
+		for(int i=0;i<50;i++)
 		{
-			myApp.PressMouseKey (m_hGameWnd,pt.x+20,pt.y+20);
+			if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"游戏",&pt)
+				|| myApp.FindBmp(m_hGameWnd,m_strPicPath+"游戏2",&pt))
+				break;
 			Sleep(1000);
 		}
-
-		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"查看",&pt)
-			|| myApp.FindBmp(m_hGameWnd,m_strPicPath+"查看2",&pt))
+		if(pt.x<0)
 		{
-			break;
-		}*/
-	}
-	if(pt.x<0)
-	{
-		WriteToFile ("找不到[点击选服]");
-		return 2260;
-	}
-	myApp.PressMouseKey(m_hGameWnd,pt.x+20,pt.y+20);//点击选服按钮
-	Sleep(1000);
-	//CaptureJpg("区服");
-	
-	//TODO:选区1~8
-	myApp.PressMouseKey(m_hGameWnd,240,140);//已有角色
-	
-	/*if(m_strArea.Find("八区")==0)
-		myApp.PressMouseKey (m_hGameWnd,240,280);
-	else if(m_strArea.Find("七区")==0)
-		myApp.PressMouseKey (m_hGameWnd,240,360);
-	else if (m_strArea.Find("六区")==0)
-		myApp.PressMouseKey(m_hGameWnd,240,430);
-	else if (m_strArea.Find("五区")==0)
-		myApp.PressMouseKey(m_hGameWnd,240,500);*/
-	
-	//TODO:选服
-
-	myApp.PressMouseKey(m_hGameWnd,500,140);//已有角色的第一个服务器
-	
-	/*if(m_strServer.Find("繁华笙歌")==0)
-		myApp.PressMouseKey(m_hGameWnd,500,140);
-	else if(m_strServer.Find("欢天喜地")==0)
-		myApp.PressMouseKey(m_hGameWnd,850,140);*/
-
-	Sleep(1000);
-	//CaptureJpg("区服");
-	//myApp.PressMouseKey (m_hGameWnd,510,530);
-	
-	/*for(int i=0;i<20;i++)
-	{
-		Sleep(3000);
-		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"启动",&pt,0,0,0,0,TRUE,80))
-		{
-			myApp.PressMouseKey (m_hGameWnd,pt.x+10,pt.y+10);
-			Sleep(3000);
+			WriteToFile("找不到图片[游戏]");
+			return 2260;
 		}
-		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"移动",&pt))
-			break;
+		myApp.PressMouseKey(m_hGameWnd,pt.x+30,pt.y-50,1,50);
+		Sleep(1000);
+		WriteToFile("等待游戏窗口");
 	}
-	if(pt.x<0)
+
+	if (SecondEnter==TRUE)
 	{
-		WriteToFile ("进入游戏超时");
-		return 2120;
+		int ret=SelectServer();
+		if (ret!=1)
+		{
+			WriteToFile("选择区服出现错误,错误代码="+ret);
+			return ret;
+		}
+	}
+
+
+	//本地账号已退出，请重新登录的提示框
+	//等待连接服务器
+	/*POINT temp;
+	for (int i=0;i<5;i++)
+	{
+		Sleep(1000);
+		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"确定",&temp))
+		{
+			myApp.PressMouseKey(m_hGameWnd,temp.x,temp.y);
+			Sleep(1000);
+			WriteToFile("关闭重新登录的提示框");
+			break;
+		}
+	}*/
+
+
+	CheckGameDialog(m_hGameWnd,m_strPicPath);//关闭可能出现的弹窗
+
+	//判断是否已经自动选择默认服务器
+	for (int i=0;i<10;i++)
+	{
+		Sleep(1000);
+		POINT ptemp;
+		if(!myApp.FindBmp(m_hGameWnd,m_strPicPath+"未选择服务器",&ptemp,405,400,765,450))
+		{
+			WriteToFile("已经连接服务器");
+			//通过修改游戏的配置文件设置默认区服
+			myApp.PressMouseKey(m_hGameWnd,590,520);//直接点击登录游戏 pt.x-70,pt.y+110
+			WriteToFile("点击登陆游戏");
+			break;
+		}
+		else WriteToFile("还没有连接上服务器");
+	}
+	
+/*	POINT ptemp;
+	for (int i=0;i<10;i++)
+	{
+		Sleep(2000);
+		
+
+		for(int j=0;j<3;j++)
+		{
+			if(!myApp.FindBmp(m_hGameWnd,m_strPicPath+"用户中心",&ptemp))
+			{
+				WriteToFile("正在登录游戏");
+				//break;
+			}
+			Sleep(1000);
+		}
+		
 	}*/
 	
-	//TODO:取消活动公告等窗口
-	POINT p;
-	//p.x=p.y=-1;
-	for (int i=0;i<5;i++)
-	{
-		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"取消",&p))
-		{
-			myApp.PressMouseKey(m_hGameWnd,p.x+5,p.y+5);
-			break;
-		}
-	}
-	for (int i=0;i<5;i++)
-	{
-		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"叉叉",&p))
-		{
-			myApp.PressMouseKey(m_hGameWnd,p.x+5,p.y+5);
-			break;
-		}
-	}
 
-	//CaptureJpg("登录成功");
+	/*myApp.PressMouseKey(m_hGameWnd,pt.x+20,pt.y+20);//点击选服按钮
+	Sleep(1000);
+	//CaptureJpg("区服");
+
+	//TODO:选区1~8
+	myApp.PressMouseKey(m_hGameWnd,240,140);//已有角色
+
+
+	TODO:选服
+
+	myApp.PressMouseKey(m_hGameWnd,500,140);//已有角色的第一个服务器
+	*/
+
+	//TODO:取消活动公告等窗口,点击esc取消活动窗口，直到出现退出游戏的提示窗口
+
+	POINT p;
+	p.x=p.y=-1;
+	Sleep(2000);
+	//if(SecondEnter==TRUE) //二次登录
+	//{
+	for (int i=0;i<60;i++)
+	{
+		myApp.SendFuncKey(VK_ESCAPE);
+		//WriteToFile("发送esc键");
+		Sleep(1000);
+		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"退出游戏",&p,350,250,820,470))
+		{
+			myApp.SendFuncKey(VK_ESCAPE);
+			break;
+		}
+		//Sleep(1000);
+	}
+	if (p.x<0)
+	{
+		WriteToFile("登录游戏超时");
+		return 4120;
+	}
+	//}
+	if(SecondEnter==FALSE)//一次登录
+	{
+		CloseGame();//关闭游戏后配置文件会被修改
+		int ret = SelectServer();
+		if(ret==3010) return ret;//该区没有角色
+		SecondEnter=TRUE;
+		goto UserLogin;
+		//if(ret==1) return 1;//第一次登录区服正确，直接进入游戏
+		//else
+		//{
+			
+			//SelectServer();
+			
+		//}
+	}
+	
 	return 1;
 
 }
@@ -1198,30 +1430,82 @@ CString CGTRYLZT::CheckCoin(HWND hWnd,int left ,int top,int right ,int bottom,CS
 //交易
 int CGTRYLZT::Trading()
 {
-	/*bgR=20,bgG=20,bgB=20;
+	//CString path=m_strCapturePath+TEXT("拼图\\");//拼图路径
+	//WriteToFile("拼图路径："+m_strCapturePath+_T("拼图\\"));
+	bgR=223,bgG=206,bgB=163;
 
 	pBigPic = new BYTE[(Lwidth+3)/4*4 * Lheight * 4 ];
 
 	WriteToFile ("开始拼图MHXY");
-	PinTu("账号安全","MHXY1");
+	PinTu("审核信息","MHXY10");
 	PinTu("总览","MHXY2");
-	PinTu("店长信息","MHXY3");
-	PinTu("宅力评定","MHXY3");
-	PinTu("套装","MHXY4");
-	PinTu("套装1","MHXY4");
-	PinTu("套装2","MHXY4");
-	PinTu("套装3","MHXY4");
-	PinTu("套装4","MHXY4");
+	PinTu("包裹","MHXY4");
+	PinTu("包裹物品1,包裹物品2","MHXY5");
+	PinTu("包裹物品3,包裹物品4","MHXY5");
+	
+	CString ppath,ppath2,ppath3,path4;
+	for (int i=1;i<=16;i+=3)
+	{
+		ppath=ppath2=ppath3=path4=_T("包裹装备");
+		ppath.Format("%s%d",ppath,i);
+		ppath2.Format("%s%d",ppath2,i+1);
+		ppath3.Format("%s%d",ppath3,i+2);
 
-	PinTu("装备","MHXY5");
-	PinTu("碎片","MHXY5");
-	PinTu("材料","MHXY5");
-	PinTu("礼物","MHXY5");
-	PinTu("消耗品","MHXY5");
-	PinTu("咖啡馆","MHXY6");*/
+		CString str=ppath+_T(",")+ppath2+_T(",")+ppath3;
+		if (FileExist(str)!="")
+		{
+			if (i>12)//包裹装备上传限制4张，超出部分作为MHXY3属性
+			{
+				PinTu(str,_T("MHXY3"));
+			}
+			else PinTu(str,_T("MHXY1"));
+		}
+		else 
+		{
+			WriteToFile("找不到截图:%s",str);
+			break;
+		}
+	}
+	for (int i=1;i<=12;i+=2)
+	{
+		ppath=ppath2=_T("仓库");
+		ppath.Format("%s%d",ppath,i);
+		ppath2.Format("%s%d",ppath2,i+1);
+		CString str=ppath+_T(",")+ppath2;
+		if(FileExist(str)!="")
+			PinTu(str,_T("MHXY5"));
+		else
+		{
+			WriteToFile("找不到%s",str);
+			break;
+		}
+	}
+	for (int i=1;i<=8;i++)
+	{
+		CString s=TEXT("宠物"),picName;
+		s.Format("%s%d",s,i);
+		picName=s;
+		s.Format("%s,%s,%s",s+_T("基本属性"),s+_T("资质技能"),s+_T("宠物内丹"));
+		if (FileExist(s)!="")
+		{
+			PinTu(s,"MHXY4");
+		}
+		else
+		{
+			WriteToFile("找不到%s",s);
+			break;
+		}
+	}
+	PinTu("人物技能,帮派技能,修炼技能","MHXY8");
 
-
-
+	PinTu("关联手机","MHXY9");
+	PinTu("安全锁","MHXY9");
+	PinTu("欢乐家园","MHXY7");
+	PinTu("充值返利","MHXY7");
+	//TODO:财产宝海包括，银币和仙玉数量，我要出售
+	PinTu("游戏币,仙玉","MHXY7");
+	PinTu("我要出售","MHXY7");
+	
 	return 1000;
 }
 int CGTRYLZT::Hero()
@@ -1274,59 +1558,121 @@ int CGTRYLZT::Trade()
 	SetWindowPos(m_hGameWnd,NULL,0,0,0,0,SWP_NOSIZE);
 	Sleep(1000);
 	//myApp.MoveMouse(m_hGameWnd,50,50);
-
-
+	
+	BackToGamePage(m_hGameWnd,m_strPicPath);
 	WriteToFile ("开始截图");
-	//CaptureJpg("开始截图");
 
-	/*if(m_strOrderType=="发布单")
-		CaptureJpgInRect( "总览", 0,37,1024,610, TRUE, RGB( 255, 188,0 ),45,43,125,63 );
-	else
-		CaptureJpgInRect( "总览", 0,37,1024,610 );*/
+	CaptureJpgInRect( "总览", 2,40,1170,690, TRUE, RGB( 255, 188,0 ),530,370,650,420);//进入游戏后的界面截图
 
+	//Sleep(1000);
+	static int DialogOccurTime=0;//弹窗导致的循环次数限制
 
-	//TODO:关闭进入游戏后的通知公告等。。。
-	for(int i=0;i<10;i++)
+ReCapturePackage:
+	//TODO：对包裹截图
+	CapturePackage(m_hGameWnd);
+	//TODO:如果发现当前页面有弹窗出现，则上面的截图可能失败，需要重新截图
+	if(CheckGameDialog(m_hGameWnd,m_strPicPath))
 	{
-		if (myApp.FindBmp(m_hGameWnd,m_strPicPath+"取消",&pt))
+		WriteToFile("进行包裹截图时出现弹窗");
+		DialogOccurTime++;
+		if(DialogOccurTime<3)
 		{
-			myApp.PressMouseKey(m_hGameWnd,pt.x+10,pt.y+10);
+			goto ReCapturePackage;
 		}
-		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"叉叉",&pt))
-		{
-			myApp.PressMouseKey(m_hGameWnd,pt.x+5,pt.y+5);
-		}
-		Sleep(1000);
+		else WriteToFile("弹窗导致包裹截图失败次数超过%d次",DialogOccurTime);
 	}
 
-	CaptureJpgInRect( "总览", 2,40,1170,690, TRUE, RGB( 255, 188,0 ),1080,660,1170,690);//进入游戏后的界面截图
-
-	Sleep(1000);
-	
-	//TODO：对包裹截图
-	//CapturePackage(m_hGameWnd);
-
-
+	DialogOccurTime=0;
+ReCapturePlayerInfo:
 	//TODO:对人物信息截图
-	//CapturePlayerInfo(m_hGameWnd);
+	CapturePlayerInfo(m_hGameWnd);
+	//TODO:如果发现当前页面有弹窗出现，则上面的截图可能失败，需要重新截图
+	if(CheckGameDialog(m_hGameWnd,m_strPicPath))
+	{
+		WriteToFile("进行人物信息截图时出现弹窗");
+		DialogOccurTime++;
+		if(DialogOccurTime<3)
+		{
+			goto ReCapturePlayerInfo;
+		}
+		else WriteToFile("弹窗导致人物信息截图失败次数超过%d次",DialogOccurTime);
+	}
 
+	DialogOccurTime=0;
+ReCapturePet:
 	//TODO:宠物截图
-	//CapturePet(m_hGameWnd);
-	
-	//TODO:出售和充值返利
-	//CaptureSell(m_hGameWnd);
+	CapturePet(m_hGameWnd);
+	//TODO:如果发现当前页面有弹窗出现，则上面的截图可能失败，需要重新截图
+	if(CheckGameDialog(m_hGameWnd,m_strPicPath))
+	{
+		WriteToFile("进行宠物锁截图时出现弹窗");
+		DialogOccurTime++;
+		if(DialogOccurTime<3)
+		{
+			goto ReCapturePet;
+		}
+		else WriteToFile("弹窗导致宠物截图失败次数超过%d次",DialogOccurTime);
+	}
+
+	DialogOccurTime=0;
+ReCaptureSell:
+	////TODO:出售和充值返利
+	CaptureSell(m_hGameWnd);
+	//TODO:如果发现当前页面有弹窗出现，则上面的截图可能失败，需要重新截图
+	if(CheckGameDialog(m_hGameWnd,m_strPicPath))
+	{
+		WriteToFile("进行出售和充值返利截图时出现弹窗");
+		DialogOccurTime++;
+		if(DialogOccurTime<3)
+		{
+			goto ReCaptureSell;
+		}
+		else WriteToFile("弹窗导致出售和充值返利截图失败次数超过%d次",DialogOccurTime);
+	}
 
 	myApp.PressMouseKey(m_hGameWnd,1130,650);//打开功能菜单
-	//TODO：技能截图
-	//CaptureSkill(m_hGameWnd);
-	
+	Sleep(1000);
+
+	DialogOccurTime=0;
+ReCaptureSkill:
+	////TODO：技能截图
+	CaptureSkill(m_hGameWnd);
+	//TODO:如果发现当前页面有弹窗出现，则上面的截图可能失败，需要重新截图
+	if(CheckGameDialog(m_hGameWnd,m_strPicPath))
+	{
+		WriteToFile("进行人物技能截图时出现弹窗");
+		DialogOccurTime++;
+		if(DialogOccurTime<3)
+		{
+			goto ReCaptureSkill;
+		}
+		else WriteToFile("弹窗导致技能截图失败次数超过%d次",DialogOccurTime);
+	}
+
+	DialogOccurTime=0;
+ReCaptureSafe:
 	//TODO:手机关联和安全锁
 	CaptureSafe(m_hGameWnd);
+	//TODO:如果发现当前页面有弹窗出现，则上面的截图可能失败，需要重新截图
+	if(CheckGameDialog(m_hGameWnd,m_strPicPath))
+	{
+		WriteToFile("进行手机关联和安全锁截图时出现弹窗");
+		DialogOccurTime++;
+		if(DialogOccurTime<3)
+		{
+			goto ReCaptureSafe;
+		}
+		else WriteToFile("弹窗导致手机关联和安全锁截图失败次数超过%d次",DialogOccurTime);
+	}
 
 	myApp.PressMouseKey(m_hGameWnd,1130,650);//关闭功能菜单
+	Sleep(1000);
 
 	int status=Trading();
 	return status;
+
+
+
 	/*for(int i=0;i<5;i++)
 	{
 	Sleep(2000);
@@ -1488,7 +1834,40 @@ BOOL CGTRYLZT::ComparePic(int pic1,int pic2)
 }
 void CGTRYLZT::CloseGame()
 {
+	//TODO:关闭mhxy游戏
 	POINT pt;
+
+	for (int i=0;i<20;i++)
+	{
+		myApp.SendFuncKey(VK_ESCAPE);
+		Sleep(1000);
+		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"退出游戏",&pt))
+		{
+			myApp.PressMouseKey(m_hGameWnd,pt.x+120,pt.y+90);//确定按钮
+			break;
+		}
+		else WriteToFile("等待退出游戏");
+		//myApp.SendFuncKey(VK_ESCAPE);
+		//Sleep(1000);
+	}
+	Sleep(1000);
+	for (int i=0;i<10;i++)
+	{
+		if (myApp.FindBmp(m_hGameWnd,m_strPicPath+"游戏",&pt)
+			||myApp.FindBmp(m_hGameWnd,m_strPicPath+"游戏2",&pt))
+		{
+			WriteToFile("关闭游戏成功");
+			break;
+		}
+		else
+		{
+			WriteToFile("关闭游戏失败");
+		}
+		Sleep(1000);
+	}
+
+
+	/*POINT pt;
 	if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"账号提示框",&pt))
 	{
 		myApp.PressMouseKey(m_hGameWnd,pt.x+10,pt.y+10);
@@ -1502,7 +1881,7 @@ void CGTRYLZT::CloseGame()
 		Sleep(3000);
 	}
 
-	return;
+	return;*/
 }
 void CGTRYLZT::CloseAllWindow()
 {
@@ -1687,7 +2066,7 @@ int CGTRYLZT::SaveBigPic(HWND hWnd,CString strPicName,CString strPicID,int picWi
 		strPicName+=".bmp";
 	if(!PathFileExists(strPicName))
 	{
-		//WriteToFile("图片[%s]不存在\r\n",strPicName);
+		WriteToFile("图片[%s]不存在\r\n",strPicName);
 		return FALSE;
 	}
 	//WriteToFile("小图[%s]\r\n",strPicName);
@@ -2355,18 +2734,16 @@ void CGTRYLZT::KillProcess()
 	if (the_strOrderNo == _T("测试订单"))
 		return;
 
-	//CloseGame();
+//	CloseGame();
 
-
-	myApp.KillWindow("AndroidEmulator.exe");
+	
+	myApp.KillWindow("Droid4X.exe");
 	Sleep(100);
-	myApp.KillWindow("AppMarket.exe");
+	myApp.KillWindow("Droid4XService.exe");
 	Sleep(100);
 	myApp.KillWindow("kpzsPay.exe");
 	Sleep(100);
-	myApp.KillWindow("TianTianPlayer.exe");
-	Sleep(100);
-	myApp.KillWindow("TTVMSVC.exe");
+	myApp.KillWindow("VBoxSVC.exe");
 	Sleep(100);
 	myApp.KillWindow("VBoxHeadless.exe");
 	Sleep(100);
@@ -2374,11 +2751,11 @@ void CGTRYLZT::KillProcess()
 	//WinExec(m_strProgPath+"\\1.bat",SW_SHOW);//清理缓存WorldOfWarships.exe
 
 
-	for(int i=0;i<20;i++)
+	/*for(int i=0;i<20;i++)
 	{
 		myApp.MoveMouse(GetDesktopWindow(),900+i*10,1005);
 		Sleep(50);
-	}
+	}*/
 	//myApp.MoveMouse(GetDesktopWindow(),50,50);
 
 }
@@ -2636,17 +3013,83 @@ void CGTRYLZT::ClearAppData()
 	myApp.DeleteFolder(strFolder);
 	Sleep(1000);
 }
-
+/************************************************************************/
+/* 调用Wangyi.exe程序执行网页登录和账号绑定信息截图的功能               */
+/************************************************************************/
 BOOL CGTRYLZT::CheckAccount()
 {
-	for(int i=0;i<m_strAccount.GetLength();i++)
+	CString stry;
+	CString orderdata;
+	HWND hwnd1;
+	orderdata.Format("游戏名称：阴阳师；游戏大区：%s；游戏服务器：%s；游戏帐号：%s；游戏密码：%s；",m_strArea,m_strServer,m_strAccount,m_strPassword);
+	stry.Format("%s %s %d %d %s %s",m_strCapturePath,the_strOrderNo,0,0,orderdata,"0");
+	if(::ShellExecuteA (NULL,"open", m_strProgPath+"\\WangYi.exe",stry,m_strProgPath ,1)< (HINSTANCE) 31)
+		return 2260;
+	
+	Sleep(5000);
+	for (int i=0;i<5;i++)
+	{
+		hwnd1=::FindWindowA(NULL,"WangYi");
+		if (hwnd1)
+		{
+			break;
+		}
+		else
+		{
+			if(::ShellExecuteA (NULL,"open", m_strProgPath+"\\WangYi.exe",stry,m_strProgPath ,1)< (HINSTANCE) 31)
+				return 2260;
+			Sleep(1000*10);
+		}
+	}
+	for (int i=0;i<3*60;i++)
+	{
+		if (i%20==19)
+		{
+			WriteToFile("等待账号验证结果...");
+		}
+		hwnd1=::FindWindowA(NULL,"WangYi");
+		if (hwnd1)
+		{
+			Sleep(1000);
+		}
+		else
+		{
+			char strBuilder[520];
+			::GetPrivateProfileString("账号信息", "执行状态", "", strBuilder, 520,m_strProgPath+"\\roleInfo.ini");
+			CString s;
+			s.Format("%s",strBuilder);
+			if (s=="1000")
+			{
+				WriteToFile("账号密码正确");
+			
+				return 1000;
+			}
+			else if (s=="2000")
+			{
+				WriteToFile("账号密码错误");
+				
+				return 3000;
+			}
+			else
+			{
+				WriteToFile("账号密码验证失败");
+				
+				return 2120;
+			}
+		}
+	}
+	WriteToFile("等待账号验证结果超时");
+	return 2120;
+
+
+	/*for(int i=0;i<m_strAccount.GetLength();i++)
 	{
 		int n=m_strAccount.GetAt(i);
 		if(n<48 || n>57)
 			return FALSE;
 	}
 
-	return TRUE;
+	return TRUE;*/
 }
 
 
@@ -2666,74 +3109,122 @@ TODO:包裹法宝截图
 /************************************************************************/
 void CGTRYLZT::CapturePackage(HWND m_hGameWnd)
 {
+	BackToGamePage(m_hGameWnd,m_strPicPath);
+
+	WriteToFile("包裹装备截图");
 	POINT pt;
-	myApp.PressMouseKey(m_hGameWnd,1130,560);//点击包裹
 	Sleep(2000);
+	for (int i=0;i<5;i++)
+	{
+		//TODO:查找包裹的图片
+		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"包裹菜单",&pt))
+		{
+			myApp.PressMouseKey(m_hGameWnd,pt.x+10,pt.y+10);//点击包裹[1130,560]
+			break;
+		}
+		else WriteToFile("找不到包裹菜单%d次",i);
+		Sleep(1000);
+	}
+	if (pt.x<0)
+	{
+		WriteToFile("找不到包裹菜单");
+		return;
+	}
+	
+	Sleep(5000);
 
 	CaptureJpgInRect("包裹",150,110,560,650);
-	//TODO：装备属性截图
-	for(int t=1;t<=12;t++)
+	CaptureJpgInRect("游戏币",130,620,570,660);
+	
+	BOOL flag=FALSE;//判断现在显示的是不是第一个套装
+	if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"装备切换",&pt))
 	{
-		if(t==7)
+		flag=TRUE;
+	}
+	//TODO：装备属性截图
+	for(int t=1;t<=16;t++)
+	{
+		if(t==9)
 		{
+			//TODO：切换套装时判断是否有其他套装可以切换
 			myApp.PressMouseKey(m_hGameWnd,340,140);//切换套装
+			Sleep(2000);
+			if(flag==TRUE && myApp.FindBmp(m_hGameWnd,m_strPicPath+"装备切换",&pt))
+			{
+				WriteToFile("玩家等级未满60级");
+				break;
+			}
 		}
-		for (int i=0;i<3;i++)
+		for (int i=0;i<2;i++)
 		{
 			int temp=t;
-			if(temp>6) temp-=6;
+			if(temp>8) temp-=8;
 			if(t%2!=0) myApp.PressMouseKey(m_hGameWnd,200,210+temp/2*100);
 			else myApp.PressMouseKey(m_hGameWnd,490,210+(temp-1)/2*100);
 			Sleep(2000);
-			if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"装备卸下",&pt))
+			if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"装备卸下",&pt,0,0,0,0,TRUE,60)
+				|| myApp.FindBmp(m_hGameWnd,m_strPicPath+"装备卸下2",&pt,0,0,0,0,TRUE,60)
+				/*||myApp.FindBmp(m_hGameWnd,m_strPicPath+"查看装备",&pt,0,0,0,0,TRUE,60,TRUE)*/)
 			{
 				CString s;
 				s.Format("%s%d","包裹装备",t);
-				CaptureJpgInRect(s,600,110,980,720);//装备属性截图
+				CaptureJpgInRect(s,600,50,930,680);//装备属性截图
 				break;
 			}
 		}
 	}
+	WriteToFile("完成装备属性截图");
+
 	//TODO:对装备仓库截图
 	myApp.PressMouseKey(m_hGameWnd,1060,330);//点击仓库
-	Sleep(1000);
+	Sleep(5000);
 	CString s;
 	int f=0;
 	for(int i=0;i<12;i++)
 	{
-		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"仓库1",&pt))
+		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"仓库1",&pt)
+			|| myApp.FindBmp(m_hGameWnd,m_strPicPath+"仓库2",&pt))
 		{
 			f++;
+			WriteToFile("找到第一个仓库%d次",f);
 		}
 		if(f>1) break;
 		s.Format("%s%d","仓库",i+1);
 		CaptureJpgInRect(s,150,110,550,590);//仓库物品截图
-
+		WriteToFile("完成对仓库%d截图",i);
 		//myApp.PressMouseKey(m_hGameWnd,340,150);//点击选择仓库
 		myApp.PressMouseKey(m_hGameWnd,280,640);//点击下一个仓库按钮
-		Sleep(1000);
+		Sleep(2000);
 	}
 
 	//TODO:包裹物品截图
 	for (int i=0;i<4;i++)
 	{
+		WriteToFile("包裹物品截图%d次",i);
 		s.Format("%s%d","包裹物品",i+1);
 		CaptureJpgInRect(s,590,120,1000,590);
 		myApp.DragMouse(m_hGameWnd,960,150,960,550);//拖动列表下拉
+		WriteToFile("拖动物品列表下拉");
 		Sleep(1000);
 	}
 	//TODO:包裹法宝截图
 	//1060,450 法宝按钮
 	//150,120->560,650 截图范围
-	myApp.PressMouseKey(m_hGameWnd,1060,450);
-	Sleep(1000);
-	myApp.PressMouseKey(m_hGameWnd,250,400);
-	Sleep(1000);
-	CaptureJpgInRect("主动法宝",150,120,560,650);
-	myApp.PressMouseKey(m_hGameWnd,450,400);
-	Sleep(1000);
-	CaptureJpgInRect("被动法宝",150,120,560,650);
-
+	WriteToFile("包裹法宝截图");
+	Sleep(2000);
+	if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"法宝",&pt))
+	{
+		myApp.PressMouseKey(m_hGameWnd,1060,450);
+		Sleep(1000);
+		myApp.PressMouseKey(m_hGameWnd,250,400);
+		Sleep(1000);
+		CaptureJpgInRect("主动法宝",150,120,560,650);
+		myApp.PressMouseKey(m_hGameWnd,450,400);
+		Sleep(1000);
+		CaptureJpgInRect("被动法宝",150,120,560,650);
+	}
+	else WriteToFile("包裹中没有法宝");
+	
 	myApp.PressMouseKey(m_hGameWnd,1020,80);//关闭包裹页面
 	Sleep(1000);
 }
@@ -2744,10 +3235,14 @@ void CGTRYLZT::CapturePackage(HWND m_hGameWnd)
 /************************************************************************/
 void CGTRYLZT::CapturePlayerInfo(HWND m_hGameWnd)
 {
+
+	BackToGamePage(m_hGameWnd,m_strPicPath);
+
+	Sleep(2000);
 	WriteToFile ("人物资料截图");
 	myApp.PressMouseKey(m_hGameWnd,1130,80);//点击人物属性,角色头像
-	Sleep(1000);
-	CaptureJpgInRect("人物属性",120,60,1020,660);
+	Sleep(2000);
+	CaptureJpgInRect("人物属性",120,60,1020,660,TRUE, RGB( 255, 188,0 ),260,110,400,150);//角色名加水印
 	Sleep(1000);
 
 
@@ -2783,32 +3278,55 @@ void CGTRYLZT::CapturePlayerInfo(HWND m_hGameWnd)
 /************************************************************************/
 void CGTRYLZT::CapturePet(HWND m_hGameWnd)
 {
+
+	WriteToFile("开始对宠物信息截图");
 	CString s;
 	POINT pt;
-	myApp.PressMouseKey(m_hGameWnd,980,80);//宠物头像
-	Sleep(1000);
-	for (int i=0;i<8;i++)
+	for (int n=0;n<5;n++)
 	{
-		myApp.PressMouseKey(m_hGameWnd,200+(i%4)*100,520+100*(i/4));//选中宠物
-		Sleep(1000);
-		//TODO:没有该宠物
-		if (myApp.FindBmp(m_hGameWnd,m_strPicPath+"购买宠物",&pt))
+		//返回游戏页面
+		BackToGamePage(m_hGameWnd,m_strPicPath);
+
+		myApp.PressMouseKey(m_hGameWnd,980,80);//宠物头像
+		Sleep(2000);
+		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"宠物",&pt)
+			|| myApp.FindBmp(m_hGameWnd,m_strPicPath+"宠物属性",&pt))
 		{
-			myApp.PressMouseKey(m_hGameWnd,1060,80);//关闭购买宠物窗口
+			for (int i=0;i<8;i++)
+			{
+				myApp.PressMouseKey(m_hGameWnd,200+(i%4)*100,520+100*(i/4));//选中宠物
+				Sleep(2000);
+				//TODO:没有该宠物
+				if (!myApp.FindBmp(m_hGameWnd,m_strPicPath+"宠物属性",&pt)
+					|| myApp.FindBmp(m_hGameWnd,m_strPicPath+"购买宠物",&pt)
+					|| myApp.FindBmp(m_hGameWnd,m_strPicPath+"购买宠物2",&pt))
+				{
+					myApp.PressMouseKey(m_hGameWnd,1060,80);//关闭购买宠物窗口
+					Sleep(1000);
+					break;
+				}
+				myApp.PressMouseKey(m_hGameWnd,650,140);//点击宠物的基础属性
+				Sleep(1000);
+				s.Format("%s%d","宠物",i+1);
+				CaptureJpgInRect(s+"基本属性",140,120,1010,670);
+				myApp.PressMouseKey(m_hGameWnd,800,140);//资质技能
+				Sleep(1000);
+				CaptureJpgInRect(s+"资质技能",580,120,1010,660);
+				myApp.PressMouseKey(m_hGameWnd,940,140);
+				Sleep(1000);
+				CaptureJpgInRect(s+"宠物内丹",580,120,1010,660);
+			}	
+			myApp.PressMouseKey(m_hGameWnd,1020,80);//关闭宠物界面
+			WriteToFile("宠物信息截图完成");
 			break;
 		}
-		myApp.PressMouseKey(m_hGameWnd,650,140);//点击宠物的基础属性
-		Sleep(1000);
-		s.Format("%s%d","宠物",i+1);
-		CaptureJpgInRect(s+"基本属性",140,120,1010,670);
-		myApp.PressMouseKey(m_hGameWnd,800,140);//资质技能
-		Sleep(1000);
-		CaptureJpgInRect(s+"资质技能",580,120,1010,660);
-		myApp.PressMouseKey(m_hGameWnd,940,140);
-		Sleep(1000);
-		CaptureJpgInRect(s+"宠物内丹",580,120,1010,660);
+		else WriteToFile("找不到宠物信息%d次",n);
 	}
-	myApp.PressMouseKey(m_hGameWnd,1020,80);
+	
+	
+	
+	//TODO:退回到游戏页面
+	BackToGamePage(m_hGameWnd,m_strPicPath);
 }
 /************************************************************************/
 /* TODO:对人物技能截图
@@ -2818,69 +3336,215 @@ void CGTRYLZT::CapturePet(HWND m_hGameWnd)
 
 void CGTRYLZT::CaptureSkill(HWND m_hGameWnd)
 {
-	//myApp.PressMouseKey(m_hGameWnd,1130,650);//功能菜单
-	Sleep(1000);
-	myApp.PressMouseKey(m_hGameWnd,950,650);//人物
-	Sleep(1000);
-	CaptureJpgInRect("人物技能",150,140,600,620);
+	BackToGamePage(m_hGameWnd,m_strPicPath);
 
-	myApp.PressMouseKey(m_hGameWnd,1060,330);//帮派
-	Sleep(1000);
-	CaptureJpgInRect("帮派技能",150,100,340,650);
+	WriteToFile("人物技能截图");
+	POINT pt;
+	for (int i=0;i<5;i++)
+	{
+		if (!myApp.FindBmp(m_hGameWnd,m_strPicPath+"技能",&pt))
+		{
+			myApp.PressMouseKey(m_hGameWnd,1130,650);//功能菜单
+			Sleep(1000);
+		}
+		else break;
+		Sleep(1000);
+	}
+	
+	if (myApp.FindBmp(m_hGameWnd,m_strPicPath+"技能",&pt))
+	{
+		//Sleep(1000);
+		myApp.PressMouseKey(m_hGameWnd,pt.x,pt.y);//人物[950,650]
+		Sleep(2000);
+		CaptureJpgInRect("人物技能",150,140,600,620);
+
+		myApp.PressMouseKey(m_hGameWnd,1060,330);//帮派
+		Sleep(2000);
+		CaptureJpgInRect("帮派技能",150,100,340,650);
 
 
-	myApp.PressMouseKey(m_hGameWnd,1060,450);//修炼
-	Sleep(1000);
-	CaptureJpgInRect("修炼技能",150,130,370,620);
+		myApp.PressMouseKey(m_hGameWnd,1060,450);//修炼
+		Sleep(2000);
+		CaptureJpgInRect("修炼技能",150,130,370,620);
 
-	myApp.PressMouseKey(m_hGameWnd,1020,80);
-
-
-	//myApp.PressMouseKey(m_hGameWnd,1130,650);//功能菜单
-	Sleep(1000);
-	myApp.PressMouseKey(m_hGameWnd,870,650);//家园
-	CaptureJpgInRect("欢乐家园",240,90,940,640);
-
-	myApp.PressMouseKey(m_hGameWnd,920,120);//关闭家园
-	Sleep(1000);
-	//myApp.PressMouseKey(m_hGameWnd,1130,650);//功能菜单
-	Sleep(1000);
+		myApp.PressMouseKey(m_hGameWnd,1020,80);
+		Sleep(1000);
+	}
+	else WriteToFile("找不到人物技能");
+	
+	if (!myApp.FindBmp(m_hGameWnd,m_strPicPath+"家园",&pt))
+	{
+		myApp.PressMouseKey(m_hGameWnd,1130,650);//功能菜单
+		Sleep(1000);
+	}
+	if (myApp.FindBmp(m_hGameWnd,m_strPicPath+"家园",&pt))
+	{
+		myApp.PressMouseKey(m_hGameWnd,pt.x,pt.y);//家园[870,650]
+		Sleep(1000);
+		CaptureJpgInRect("欢乐家园",240,90,940,640);
+		myApp.PressMouseKey(m_hGameWnd,920,120);//关闭家园
+		Sleep(1000);
+	}
+	else WriteToFile("玩家没有家园");
 }
 /************************************************************************/
 /* TODO:对手机关联和安全锁截图                                                                     */
 /************************************************************************/
 void CGTRYLZT::CaptureSafe(HWND m_hGameWnd)
 {
-	myApp.PressMouseKey(m_hGameWnd,700,650);//系统设置
-	Sleep(1000);
-	myApp.PressMouseKey(m_hGameWnd,830,580);//手机关联
-	Sleep(1000);
-	CaptureJpgInRect("关联手机",330,200,850,540);
-	myApp.PressMouseKey(m_hGameWnd,830,220);
-	Sleep(1000);
+	BackToGamePage(m_hGameWnd,m_strPicPath);
 
-	myApp.PressMouseKey(m_hGameWnd,1000,380);//安全锁
-	Sleep(1000);
-	CaptureJpgInRect("安全锁",180,130,970,620);
-	myApp.PressMouseKey(m_hGameWnd,950,140);//关闭系统设置
-	Sleep(1000);
+	WriteToFile("开始对手机关联和安全锁截图");
+	POINT pt;
+	for (int i=0;i<4;i++)
+	{
+		Sleep(1000);
+		if (!myApp.FindBmp(m_hGameWnd,m_strPicPath+"系统",&pt,230,580,1170,700))
+		{
+			myApp.PressMouseKey(m_hGameWnd,1130,650);//功能菜单
+			Sleep(1000);
+		}
+		if (myApp.FindBmp(m_hGameWnd,m_strPicPath+"系统",&pt,230,580,1170,700))
+		{
+			WriteToFile("正在对手机关联和安全锁截图");
+			myApp.PressMouseKey(m_hGameWnd,pt.x,pt.y);//系统设置
+			Sleep(1000);
+
+			myApp.PressMouseKey(m_hGameWnd,830,580);//手机关联
+			Sleep(1000);
+			CaptureJpgInRect("关联手机",330,200,850,540);
+			myApp.PressMouseKey(m_hGameWnd,830,220);
+			Sleep(1000);
+
+			myApp.PressMouseKey(m_hGameWnd,1000,380);//安全锁
+			Sleep(1000);
+			CaptureJpgInRect("安全锁",180,130,970,620);
+			myApp.PressMouseKey(m_hGameWnd,950,140);//关闭系统设置
+			Sleep(1000);
+			break;
+		}
+		else WriteToFile("找不到系统菜单按钮");
+	}
+	
 }
 /************************************************************************/
 /* TODO:出售和充值返利                                                                     */
 /************************************************************************/
 void CGTRYLZT::CaptureSell(HWND m_hGameWnd)
 {
-	myApp.PressMouseKey(m_hGameWnd,40,250);//商城
-	Sleep(1000);
-	myApp.PressMouseKey(m_hGameWnd,430,140);//出售
-	Sleep(1000);
-	CaptureJpgInRect("我要出售",140,110,1010,660);
-	myApp.PressMouseKey(m_hGameWnd,1060,570);//充值
-	Sleep(1000);
-	myApp.PressMouseKey(m_hGameWnd,430,130);//充值返利
-	Sleep(1000);
-	myApp.DragMouse(m_hGameWnd,300,220,300,600);
-	Sleep(1000);
-	CaptureJpgInRect("充值返利",140,110,1010,660);
-	myApp.PressMouseKey(m_hGameWnd,1020,80);
+	BackToGamePage(m_hGameWnd,m_strPicPath);
+	
+	POINT pt;
+	WriteToFile("准备对出售和充值返利截图");
+	for (int i=0;i<5;i++)
+	{
+		Sleep(1000);
+		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"商城",&pt))
+		{
+			WriteToFile("正在进行出售和充值返利截图");
+			myApp.PressMouseKey(m_hGameWnd,pt.x,pt.y);//商城
+			Sleep(1000);
+			myApp.PressMouseKey(m_hGameWnd,430,140);//出售
+			Sleep(1000);
+			CaptureJpgInRect("我要出售",140,110,1010,660);
+			myApp.PressMouseKey(m_hGameWnd,1060,570);//充值
+			Sleep(2000);
+			//TODO:拥有的仙玉截图
+			CaptureJpgInRect("仙玉",770,130,1020,170);//仙玉数量
+			myApp.PressMouseKey(m_hGameWnd,430,130);//充值返利
+			Sleep(1000);
+			myApp.DragMouse(m_hGameWnd,300,220,300,600);
+			Sleep(1000);
+			CaptureJpgInRect("充值返利",140,110,1010,660);
+			myApp.PressMouseKey(m_hGameWnd,1020,80);
+			WriteToFile("完成对出售和充值返利截图");
+			break;
+		}
+	}
+	if(pt.x<0)
+	{
+		WriteToFile("找不到商城");
+	}
 }
+
+/************************************************************************/
+/* 选择游戏区服                                                         */
+/************************************************************************/
+int CGTRYLZT::SelectServer()
+{
+	DeleteFile("E:\\Cocos2dxPrefsFile.xml");
+	system("adb kill-server");
+	system("adb connect 127.0.0.1:26944");
+	system("adb pull /data/data/com.netease.my/shared_prefs/Cocos2dxPrefsFile.xml E:\\");
+
+	Sleep(2000);
+	system("adb kill-server");
+
+	CString stmp=myApp.ReadFile("E:\\Cocos2dxPrefsFile.xml");
+	stmp=U2G(stmp);
+	if (stmp)
+	{
+		CString NowServer=myApp.FindStr(stmp,"\<string name=\"LastLoginServerName\"","/string\>");
+		CString NowArea=myApp.FindStr(stmp,"\<string name=\"LastLoginDistrictName\"","/string\>");
+		CString NowHostnum=myApp.FindStr(stmp,"\<string name=\"LastLoginHostnum\"","/string\>");
+		CString NowUserId=myApp.FindStr(stmp,"\<string name=\"LastLoginUserId\"","/string\>");
+		if (NowServer.Find(m_strServer)>=0)
+		{
+			WriteToFile("区服正确");
+			return 1;
+		}
+		else
+		{
+			if (SecondEnter)
+			{
+				WriteToFile("区服配置有误");
+				return 2260;
+			}
+			WriteToFile("默认区服错误,修改区服配置");
+			//修改完成区服后需要重新登录，配置文件才能生效
+			//CloseGame();//关闭游戏
+			
+			//CloseWind();
+			//SecondEnter=TRUE;
+			CString m_Hostnum,m_UserId,NowLoginInfo,m_LoginInfo;
+			int l=stmp.Find(":"+m_strServer);
+			if (stmp.Find(":"+m_strServer)<0)
+			{
+				WriteToFile("账号不存在该区服角色");
+				return 3010;
+			}
+			m_UserId=myApp.FindStr(stmp,":"+m_strServer+":",":");
+			m_Hostnum=stmp.Mid(stmp.Find(":"+m_strServer)-4,4);
+			NowLoginInfo=myApp.FindStr(stmp,"\<string name=\"XyqPocket_LoginInfo_"+m_Hostnum+"_"+m_UserId+"\"","/string\>");
+			m_LoginInfo=m_strArea+":"+m_Hostnum+":"+m_strServer+":"+m_UserId+":9999999999:1::0";
+			WriteToFile("登陆服务器的信息："+m_LoginInfo);
+			stmp.Replace(NowServer,"\>"+m_strServer+"\<");
+			stmp.Replace(NowArea,"\>"+m_strArea+"\<");
+			stmp.Replace(NowHostnum,"\>"+m_Hostnum+"\<");
+			stmp.Replace(NowUserId,"\>"+m_UserId+"\<");
+			stmp.Replace(NowLoginInfo,"\>"+m_LoginInfo+"\<");
+
+			stmp=CString_To_UTF8(stmp);
+			FILE*  fp=0;
+			fopen_s(&fp,"E:\\Cocos2dxPrefsFile.xml","wb");
+			int len = stmp.GetLength();
+			fwrite(stmp.GetBuffer(),1,len,fp);
+			stmp.ReleaseBuffer();
+			fclose(fp);
+			Sleep(2000);
+			system("adb kill-server");
+			system("adb connect 127.0.0.1:26944");
+			system("adb push E:\\Cocos2dxPrefsFile.xml /data/data/com.netease.my/shared_prefs");
+
+			Sleep(2000);
+			system("adb kill-server");
+			return 2;
+		}
+	}
+	else
+	{	
+		WriteToFile("读取配置游戏文件出错");
+		return 2260;
+	}
+}
+
