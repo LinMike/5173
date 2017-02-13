@@ -32,8 +32,8 @@ int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
 #ifdef _TEST
 	//
 #else
-
-	//return theApp.Trading();
+	/*theApp.m_strCapturePath=_T("E:\\梦幻西游拼图\\");
+	return theApp.Trading();*/
 
 	//程序接收参数：OrderNo + 1 + UDPPort
 	if ( argc != 4 )
@@ -985,6 +985,11 @@ int CGTRYLZT::WaitStartGame()
 			myApp.PressMouseKey(m_hGameWnd,pt.x,pt.y);
 			Sleep(2000);
 		}
+		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"重新登录",&pt))
+		{
+			myApp.PressMouseKey(m_hGameWnd,pt.x,pt.y);
+			Sleep(2000);
+		}
 		if (myApp.FindBmp(m_hGameWnd,m_strPicPath+"取消",&pt))
 		{
 			myApp.PressMouseKey(m_hGameWnd,pt.x,pt.y);
@@ -1018,7 +1023,7 @@ int CGTRYLZT::WaitStartGame()
 		}
 		
 		//Sleep(2000);
-		for (int i=0;i<10;i++)
+		for (int i=0;i<5;i++)
 		{
 			if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"切换账号",&ptTemp)
 				|| myApp.FindBmp(m_hGameWnd,m_strPicPath+"切换账号2",&ptTemp))
@@ -1032,9 +1037,9 @@ int CGTRYLZT::WaitStartGame()
 		if(ptTemp.x<0)
 		{
 			WriteToFile("找不到切换账号");
-			return 1;
+			//return 1;
 		}
-		for (int i=0;i<10;i++)
+		for (int i=0;i<5;i++)
 		{
 			if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"其他账号",&pt)
 				|| myApp.FindBmp(m_hGameWnd,m_strPicPath+"其他账号2",&pt))
@@ -1048,7 +1053,7 @@ CheckInOther:	myApp.PressMouseKey(m_hGameWnd,pt.x+10,pt.y+10);//点击使用其他账号
 		if(pt.x<0)
 		{
 			WriteToFile("找不到其他账号");
-			return 1;
+			//return 1;
 		}
 	}
 	
@@ -1206,20 +1211,6 @@ UserLogin:
 
 
 	//本地账号已退出，请重新登录的提示框
-	//等待连接服务器
-	/*POINT temp;
-	for (int i=0;i<5;i++)
-	{
-		Sleep(1000);
-		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"确定",&temp))
-		{
-			myApp.PressMouseKey(m_hGameWnd,temp.x,temp.y);
-			Sleep(1000);
-			WriteToFile("关闭重新登录的提示框");
-			break;
-		}
-	}*/
-
 
 	CheckGameDialog(m_hGameWnd,m_strPicPath);//关闭可能出现的弹窗
 
@@ -1442,7 +1433,12 @@ int CGTRYLZT::Trading()
 	PinTu("包裹","MHXY4");
 	PinTu("包裹物品1,包裹物品2","MHXY5");
 	PinTu("包裹物品3,包裹物品4","MHXY5");
-	
+	PinTu("主动法宝,被动法宝","MHXY4");//MHXY4十张
+	PinTu("人物属性","MHXY3");
+	PinTu("人物信息","MHXY3");
+	PinTu("加点方案1","MHXY9");
+	PinTu("加点方案2","MHXY8");
+
 	CString ppath,ppath2,ppath3,path4;
 	for (int i=1;i<=16;i+=3)
 	{
@@ -1450,7 +1446,9 @@ int CGTRYLZT::Trading()
 		ppath.Format("%s%d",ppath,i);
 		ppath2.Format("%s%d",ppath2,i+1);
 		ppath3.Format("%s%d",ppath3,i+2);
-
+		//path4.Format("%s%d",path4,i+3);
+		//PinTu(ppath+_T(",")+ppath2+_T(",")+ppath3+_T(",")+path4,_T("MHXY1"));
+		//CString str=ppath+_T(",")+ppath2+_T(",")+_T("换行")+_T(",")+ppath3+_T(",")+path4;
 		CString str=ppath+_T(",")+ppath2+_T(",")+ppath3;
 		if (FileExist(str)!="")
 		{
@@ -1463,7 +1461,7 @@ int CGTRYLZT::Trading()
 		else 
 		{
 			WriteToFile("找不到截图:%s",str);
-			break;
+			//break;
 		}
 	}
 	for (int i=1;i<=12;i+=2)
@@ -1476,7 +1474,7 @@ int CGTRYLZT::Trading()
 			PinTu(str,_T("MHXY5"));
 		else
 		{
-			WriteToFile("找不到%s",str);
+			WriteToFile("找不到截图：%s",str);
 			break;
 		}
 	}
@@ -1492,7 +1490,7 @@ int CGTRYLZT::Trading()
 		}
 		else
 		{
-			WriteToFile("找不到%s",s);
+			WriteToFile("找不到截图:%s",s);
 			break;
 		}
 	}

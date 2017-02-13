@@ -214,6 +214,7 @@ public:
 	void ClearAppData();
 	int WebPage();
 	void DragMouse(HWND hwnd,int fromX,int fromY,int toX,int toY);
+	//int SaveBigPic(HWND hWnd,CString strPicName,CString strPicID);
 
 	//声明方法
 	void CapturePackage(HWND m_hGameWnd);
@@ -1106,10 +1107,11 @@ BOOL CheckGameDialog(HWND m_hGameWnd,CString m_strPicPath)
 	for (int i=0;i<5;i++)
 	{
 		if (myApp.FindBmp(m_hGameWnd,m_strPicPath+"接受用户协议",&pt)
-			|| myApp.FindBmp(m_hGameWnd,m_strPicPath+"取消",&pt))
+			|| myApp.FindBmp(m_hGameWnd,m_strPicPath+"取消",&pt)
+			|| myApp.FindBmp(m_hGameWnd,m_strPicPath+"重新登录",&pt))
 		{
 			myApp.PressMouseKey(m_hGameWnd,pt.x+10,pt.y+10);
-			myApp.WriteToFile("关闭用户协议或活动的弹窗");
+			myApp.WriteToFile("关闭用户协议或活动或重新登录的弹窗");
 			Sleep(1000);
 			flag=TRUE;
 		}
