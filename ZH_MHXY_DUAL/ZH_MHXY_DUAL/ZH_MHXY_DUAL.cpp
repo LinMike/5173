@@ -31,7 +31,19 @@ int _tmain(int argc, TCHAR* argv[], TCHAR* envp[])
 {
 #ifdef _TEST
 	//
+
 #else
+
+	/*CString strTemp,m_strAccount;
+	strTemp="15811761092＠163.com";
+	m_strAccount=strTemp;
+	toDBS(m_strAccount,strTemp);
+	m_strAccount=strTemp;
+	if (m_strAccount.Find("@")>0)
+	{
+		cout<<1<<endl;
+	}else cout<<0<<endl;*/
+
 	/*theApp.m_strCapturePath=_T("E:\\梦幻西游拼图\\");
 	return theApp.Trading();*/
 
@@ -225,18 +237,39 @@ BOOL CGTRYLZT::GameMain()
 	//
 #endif
 	
-
-
+	//if (m_strAccount.Find("＠")>0)//全角@
+	//{
+	//	m_strAccount.Replace("＠","@");
+	//}
+	//字符串全角转化为半角
+	m_strAccount=toDBS(m_strAccount);
+	m_strPassword=toDBS(m_strPassword);
+	if (m_strAccount.Find("@")<0)
+	{
+		m_strAccount.Append("@163.com");
+	}
+	WriteToFile("登录账号为:%s",m_strAccount);
+	
 	for (int i=0;i<3;i++)
 	{
 		Status=CheckAccount();
 		if (Status>=3000)
+		{
+			WriteToFile("账号或密码错误，Status=%d",Status);
+			myApp.KillWindow("WangYi.exe");
 			return Status;
+		}
 		else if (Status==2120)
 			continue;
 		else break;
 	}
-	
+	if(Status!=1000)
+	{
+		WriteToFile("账号密码验证失败，Status=%d",Status);
+		myApp.KillWindow("WangYi.exe");
+		return Status;
+	}
+	myApp.KillWindow("WangYi.exe");
 	//Sleep(1000*50);
 	/*for(int i=0;i<3;i++)
 	{
@@ -980,7 +1013,8 @@ int CGTRYLZT::WaitStartGame()
 		if(i%20==0)
 			WriteToFile("等待登录页面");
 		//用户协议弹窗
-		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"接受用户协议",&pt))
+		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"接受用户协议",&pt)
+			|| myApp.FindBmp(m_hGameWnd,m_strPicPath+"接受用户协议2",&pt))
 		{
 			myApp.PressMouseKey(m_hGameWnd,pt.x,pt.y);
 			Sleep(2000);
@@ -995,7 +1029,8 @@ int CGTRYLZT::WaitStartGame()
 			myApp.PressMouseKey(m_hGameWnd,pt.x,pt.y);
 			Sleep(2000);
 		}
-		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"确定",&pt))
+		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"确定",&pt)
+			|| myApp.FindBmp(m_hGameWnd,m_strPicPath+"确定2",&pt))
 		{
 			myApp.PressMouseKey(m_hGameWnd,pt.x,pt.y);
 			Sleep(2000);
@@ -1222,7 +1257,7 @@ UserLogin:
 		if(!myApp.FindBmp(m_hGameWnd,m_strPicPath+"未选择服务器",&ptemp,405,400,765,450))
 		{
 			WriteToFile("已经连接服务器");
-			//通过修改游戏的配置文件设置默认区服
+			
 			myApp.PressMouseKey(m_hGameWnd,590,520);//直接点击登录游戏 pt.x-70,pt.y+110
 			WriteToFile("点击登陆游戏");
 			break;
@@ -1264,12 +1299,14 @@ UserLogin:
 
 	//TODO:取消活动公告等窗口,点击esc取消活动窗口，直到出现退出游戏的提示窗口
 
+	CheckGameDialog(m_hGameWnd,m_strPicPath);//点击登录游戏后判断是否有弹窗出现
+
 	POINT p;
 	p.x=p.y=-1;
 	Sleep(2000);
 	//if(SecondEnter==TRUE) //二次登录
 	//{
-	for (int i=0;i<60;i++)
+	for (int i=0;i<60*3;i++)
 	{
 		myApp.SendFuncKey(VK_ESCAPE);
 		//WriteToFile("发送esc键");
@@ -1277,6 +1314,14 @@ UserLogin:
 		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"退出游戏",&p,350,250,820,470))
 		{
 			myApp.SendFuncKey(VK_ESCAPE);
+			//通过修改游戏的配置文件设置默认区服
+			Sleep(2000);
+			if (SecondEnter==FALSE && CheckGameServer(m_strServer)==1)//进入游戏后获取配置文件判断当前是否是正确的区服
+			{
+				WriteToFile("默认服务器正确，不需要修改配置文件");
+				SecondEnter=TRUE;
+			}
+
 			break;
 		}
 		//Sleep(1000);
@@ -3019,6 +3064,7 @@ BOOL CGTRYLZT::CheckAccount()
 	CString stry;
 	CString orderdata;
 	HWND hwnd1;
+
 	orderdata.Format("游戏名称：阴阳师；游戏大区：%s；游戏服务器：%s；游戏帐号：%s；游戏密码：%s；",m_strArea,m_strServer,m_strAccount,m_strPassword);
 	stry.Format("%s %s %d %d %s %s",m_strCapturePath,the_strOrderNo,0,0,orderdata,"0");
 	if(::ShellExecuteA (NULL,"open", m_strProgPath+"\\WangYi.exe",stry,m_strProgPath ,1)< (HINSTANCE) 31)
@@ -3132,7 +3178,7 @@ void CGTRYLZT::CapturePackage(HWND m_hGameWnd)
 	Sleep(5000);
 
 	CaptureJpgInRect("包裹",150,110,560,650);
-	CaptureJpgInRect("游戏币",130,620,570,660);
+	CaptureJpgInRect("游戏币",130,620,570,700);
 	
 	BOOL flag=FALSE;//判断现在显示的是不是第一个套装
 	if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"装备切换",&pt))
@@ -3448,7 +3494,7 @@ void CGTRYLZT::CaptureSell(HWND m_hGameWnd)
 			myApp.PressMouseKey(m_hGameWnd,1060,570);//充值
 			Sleep(2000);
 			//TODO:拥有的仙玉截图
-			CaptureJpgInRect("仙玉",770,130,1020,170);//仙玉数量
+			CaptureJpgInRect("仙玉",770,130,1020,210);//仙玉数量
 			myApp.PressMouseKey(m_hGameWnd,430,130);//充值返利
 			Sleep(1000);
 			myApp.DragMouse(m_hGameWnd,300,220,300,600);

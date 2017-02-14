@@ -1097,6 +1097,35 @@ void BackToGamePage(HWND m_hGameWnd,CString m_strPicPath)
 	Sleep(2000);
 }
 /************************************************************************/
+/* 读取配置文件判断当前默认区服是否是要登录的区服                       */
+/************************************************************************/
+INT CheckGameServer(CString m_strServer)
+{
+	DeleteFile("E:\\Cocos2dxPrefsFile.xml");
+	system("adb kill-server");
+	system("adb connect 127.0.0.1:26944");
+	system("adb pull /data/data/com.netease.my/shared_prefs/Cocos2dxPrefsFile.xml E:\\");
+
+	Sleep(2000);
+	system("adb kill-server");
+
+	CString stmp=myApp.ReadFile("E:\\Cocos2dxPrefsFile.xml");
+	stmp=U2G(stmp);
+	if (stmp)
+	{
+		CString NowServer=myApp.FindStr(stmp,"\<string name=\"LastLoginServerName\"","/string\>");
+		CString NowArea=myApp.FindStr(stmp,"\<string name=\"LastLoginDistrictName\"","/string\>");
+		CString NowHostnum=myApp.FindStr(stmp,"\<string name=\"LastLoginHostnum\"","/string\>");
+		CString NowUserId=myApp.FindStr(stmp,"\<string name=\"LastLoginUserId\"","/string\>");
+		if (NowServer.Find(m_strServer)>=0)
+		{
+			myApp.WriteToFile("区服正确");
+			return 1;
+		}
+	}
+	return 0;
+}
+/************************************************************************/
 /* 判断当前是否有游戏弹窗出现                                           */
 /************************************************************************/
 BOOL CheckGameDialog(HWND m_hGameWnd,CString m_strPicPath)
@@ -1107,6 +1136,7 @@ BOOL CheckGameDialog(HWND m_hGameWnd,CString m_strPicPath)
 	for (int i=0;i<5;i++)
 	{
 		if (myApp.FindBmp(m_hGameWnd,m_strPicPath+"接受用户协议",&pt)
+			|| myApp.FindBmp(m_hGameWnd,m_strPicPath+"接受用户协议2",&pt)
 			|| myApp.FindBmp(m_hGameWnd,m_strPicPath+"取消",&pt)
 			|| myApp.FindBmp(m_hGameWnd,m_strPicPath+"重新登录",&pt))
 		{
@@ -1127,7 +1157,8 @@ BOOL CheckGameDialog(HWND m_hGameWnd,CString m_strPicPath)
 				Sleep(1000);
 			}
 		}
-		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"确定",&pt))
+		if(myApp.FindBmp(m_hGameWnd,m_strPicPath+"确定",&pt)
+			|| myApp.FindBmp(m_hGameWnd,m_strPicPath+"确定2",&pt))
 		{
 			myApp.PressMouseKey(m_hGameWnd,pt.x+5,pt.y+5);
 			myApp.WriteToFile("关闭包含确定按钮的弹窗");
@@ -1138,3 +1169,36 @@ BOOL CheckGameDialog(HWND m_hGameWnd,CString m_strPicPath)
 	}
 	return flag;
 }
+CString toDBS(CString oriStr)  
+{  
+	CString dstStr = "";  
+	unsigned char tmp, tmp1;  
+	for(unsigned int i = 0; i < oriStr.GetLength(); i++)  
+	{  
+		tmp = oriStr.GetAt(i);  
+		tmp1 = oriStr.GetAt(i+1);  
+		if(tmp == 163)  
+		{  
+			dstStr.AppendChar((unsigned char)oriStr.GetAt(i + 1) - 128);  
+			i++;  
+			continue;  
+		}  
+		else if(tmp > 163)  
+		{  
+			dstStr += tmp ;  
+			dstStr += tmp1;  
+			i++;  
+			continue;  
+		}  
+		else if(tmp == 161 && tmp1 == 161)  
+		{  
+			dstStr += "";  
+			i++;  
+		}  
+		else  
+		{  
+			dstStr += tmp;  
+		}  
+	}  
+	return dstStr;
+}  
